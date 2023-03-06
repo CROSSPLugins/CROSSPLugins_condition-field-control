@@ -1,0 +1,26 @@
+{
+  "manifest_version": 1,
+  "version": "1.0.0",
+  "type": "APP",
+  "desktop": {
+    "js": ["js/userScreen.js"],
+    "css": []
+  },
+  "icon": "image/icon.png",
+  "config": {
+    "html": "html/settingScreen.html",
+    "js": ["js/settingScreen.js"],
+    "css": ["css/51-modern-default.css"],
+    "required_params": ["licensekey"]
+  },
+  "name": {
+    "ja": "CROSSPLugins テンプレート",
+    "en": "CROSSPLugins テンプレート",
+    "zh": "CROSSPLugins テンプレート"
+  },
+  "description": {
+    "ja": "これはテンプレートです。",
+    "en": "これはテンプレートです。",
+    "zh": "これはテンプレートです。"
+  }
+}
