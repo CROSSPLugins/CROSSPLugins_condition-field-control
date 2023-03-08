@@ -1,5 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { RecoilRoot } from 'recoil';
 
 import App from './App';
 
@@ -7,8 +8,8 @@ import App from './App';
   console.log('config:', kintone.plugin.app.getConfig($PLUGIN_ID));
   const root = createRoot(document.getElementById('app') as HTMLElement);
   root.render(
-    <React.StrictMode>
+    <RecoilRoot>
       <App></App>
-    </React.StrictMode>
+    </RecoilRoot>
   );
 })(kintone.$PLUGIN_ID);
