@@ -1,14 +1,13 @@
 import { css } from '@emotion/react';
+import FieldControlList from './FieldControlList';
 
 const style = {
   container: css({
-    height: '100%'
-  }),
-  setting: css({
-    height: '85%'
+    height: '100%',
+    backgroundColor: '#F7F9FA',
+    padding: '1rem'
   }),
   buttons: css({
-    height: '15%',
     '.kintoneplugin-button-normal': {
       marginRight: '10px'
     }
@@ -32,7 +31,7 @@ const savePluginSettings = () => {
 export default () => {
   return (
     <div css={style.container}>
-      <div css={style.setting}>各プラグインでの設定</div>
+      <FieldControlList />
       <div css={style.buttons}>
         <button className='kintoneplugin-button-normal'>キャンセル</button>
         <button className='kintoneplugin-button-dialog-ok' onClick={savePluginSettings}>

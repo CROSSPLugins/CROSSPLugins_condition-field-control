@@ -23,8 +23,7 @@ const style = {
   }),
   content: css({
     border: `1px solid ${SELECTED_TAB_COLOR}`,
-    height: '600px',
-    padding: '10px'
+    height: '600px'
   })
 };
 
