@@ -51,7 +51,10 @@ export default () => {
         </div>
       </div>
       {/* コンテンツ */}
-      <div css={style.content}>{selectedTab === 0 ? <PluginSetting /> : <SystemInfo />}</div>
+      <div css={style.content}>
+        <PluginSetting show={selectedTab === 0} />
+        <SystemInfo show={selectedTab === 1} />
+      </div>
     </div>
   );
 };

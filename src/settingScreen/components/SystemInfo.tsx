@@ -8,14 +8,15 @@ const style = {
   container: css({
     padding: '10px',
     boxSizing: 'border-box'
-  })
+  }),
+  toggle: (_: boolean) => !_ && css({ display: 'none'})
 };
 
-export default () => {
+export default (props: { show: boolean }) => {
   const haslicensekey = true;
 
   return (
-    <div css={style.container}>
+    <div css={[style.container, style.toggle(props.show)]}>
       {haslicensekey ? <LicenseInfoForm /> : <LicenseRegisterForm />}
       <SoftwareLicense />
     </div>
