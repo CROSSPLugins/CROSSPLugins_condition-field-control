@@ -22,8 +22,7 @@ const style = {
     backgroundColor: '#f3f3f3'
   }),
   content: css({
-    border: `1px solid ${SELECTED_TAB_COLOR}`,
-    height: '600px'
+    border: `1px solid ${SELECTED_TAB_COLOR}`
   })
 };
 

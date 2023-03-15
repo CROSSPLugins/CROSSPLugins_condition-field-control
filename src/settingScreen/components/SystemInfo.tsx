@@ -7,7 +7,8 @@ import SoftwareLicense from './SoftwareLicense';
 const style = {
   container: css({
     padding: '10px',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    minHeight: '600px'
   }),
   toggle: (_: boolean) => !_ && css({ display: 'none'})
 };

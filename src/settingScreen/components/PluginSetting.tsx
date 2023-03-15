@@ -3,9 +3,10 @@ import FieldControlList from './FieldControlList';
 
 const style = {
   container: css({
-    height: '100%',
     backgroundColor: '#F7F9FA',
-    padding: '1rem'
+    padding: '1rem',
+    boxSizing: 'border-box',
+    minHeight: '600px'
   }),
   buttons: css({
     '.kintoneplugin-button-normal': {
