@@ -22,8 +22,7 @@ const style = {
     backgroundColor: '#f3f3f3'
   }),
   content: css({
-    border: `1px solid ${SELECTED_TAB_COLOR}`,
-    height: '600px'
+    border: `1px solid ${SELECTED_TAB_COLOR}`
   })
 };
 
@@ -51,7 +50,10 @@ export default () => {
         </div>
       </div>
       {/* コンテンツ */}
-      <div css={style.content}>{selectedTab === 0 ? <PluginSetting /> : <SystemInfo />}</div>
+      <div css={style.content}>
+        <PluginSetting show={selectedTab === 0} />
+        <SystemInfo show={selectedTab === 1} />
+      </div>
     </div>
   );
 };

@@ -7,15 +7,17 @@ import SoftwareLicense from './SoftwareLicense';
 const style = {
   container: css({
     padding: '10px',
-    boxSizing: 'border-box'
-  })
+    boxSizing: 'border-box',
+    minHeight: '600px'
+  }),
+  toggle: (_: boolean) => !_ && css({ display: 'none'})
 };
 
-export default () => {
+export default (props: { show: boolean }) => {
   const haslicensekey = true;
 
   return (
-    <div css={style.container}>
+    <div css={[style.container, style.toggle(props.show)]}>
       {haslicensekey ? <LicenseInfoForm /> : <LicenseRegisterForm />}
       <SoftwareLicense />
     </div>

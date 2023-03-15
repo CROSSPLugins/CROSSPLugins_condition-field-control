@@ -3,15 +3,17 @@ import FieldControlList from './FieldControlList';
 
 const style = {
   container: css({
-    height: '100%',
     backgroundColor: '#F7F9FA',
-    padding: '1rem'
+    padding: '1rem',
+    boxSizing: 'border-box',
+    minHeight: '600px'
   }),
   buttons: css({
     '.kintoneplugin-button-normal': {
       marginRight: '10px'
     }
-  })
+  }),
+  toggle: (_: boolean) => !_ && css({ display: 'none'})
 };
 
 const savePluginSettings = () => {
@@ -28,9 +30,9 @@ const savePluginSettings = () => {
   );
 };
 
-export default () => {
+export default (props: { show: boolean }) => {
   return (
-    <div css={style.container}>
+    <div css={[style.container, style.toggle(props.show)]}>
       <FieldControlList />
       <div css={style.buttons}>
         <button className='kintoneplugin-button-normal'>キャンセル</button>
