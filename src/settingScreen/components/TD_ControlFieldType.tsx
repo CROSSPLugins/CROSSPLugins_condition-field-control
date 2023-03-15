@@ -1,23 +1,30 @@
-import { useState } from 'react';
-import { ControlType } from '../type';
+import { SetterOrUpdater } from 'recoil';
+import { ControlType, FieldControl } from '../type';
+import { deepcp } from '../utils';
 
-export default (props: { 
-  index: number
+export default (props: {
+  listIndex: number
   rowSpan: number
   formFieldsInfo: { type: string, code: string, label: string, expression: string }[]
+  list: FieldControl[]
+  setList: SetterOrUpdater<FieldControl[]>
 }) => {
-  const [controlType, setControlType] = useState<ControlType>('required');
-
   return (
     <>
       <td rowSpan={props.rowSpan}>
         <div className="kintoneplugin-select-outer">
           <div className="kintoneplugin-select">
-            <select defaultValue="- - -">
-              <option disabled>- - -</option>
+            <select 
+              value={props.list[props.listIndex].targetField ?? ''} 
+              onChange={(event) => {
+                const _list = deepcp(props.list);
+                _list[props.listIndex].targetField = event.target.value;
+                props.setList(_list);
+              }}>
+              <option value="" disabled>- - -</option>
               {
                 props.formFieldsInfo.filter(e => {
-                  if(controlType === 'required') { // 必須項目
+                  if(props.list[props.listIndex].controlType === 'required') { // 必須項目
                     switch(e.type) {
                       case 'RECORD_NUMBER': // レコード番号
                       case 'CREATOR': // 作成者
@@ -32,7 +39,7 @@ export default (props: {
                         return true;
                     }
                   }
-                  else if(controlType === 'uneditable') { // 編集不可
+                  else if(props.list[props.listIndex].controlType === 'uneditable') { // 編集不可
                     switch(e.type) {
                       case 'RECORD_NUMBER': // レコード番号
                       case 'CREATOR': // 作成者
@@ -65,7 +72,13 @@ export default (props: {
       <td rowSpan={props.rowSpan}>
         <div className="kintoneplugin-select-outer">
           <div className="kintoneplugin-select">
-            <select onChange={(event) => { setControlType(event.target.value as ControlType)}}>
+            <select 
+              value={props.list[props.listIndex].controlType} 
+              onChange={(event) => {
+                const _list = deepcp(props.list);
+                _list[props.listIndex].controlType = event.target.value as ControlType;
+                props.setList(_list);
+              }}>
               <option value="required">入力必須</option>
               <option value="uneditable">編集不可</option>
             </select>

@@ -5,16 +5,16 @@ export type ControlType =
 
 export type FieldControl = {
   // 制御対象フィールドコード
-  targetField: string
+  targetField: string | null
   // 制御の種類
   controlType: ControlType
   // 制御の条件設定一覧
   config: {
     // 制御条件対象フィールドコード
-    field: string
+    field: string | null
     // オペレーター
-    op: string
+    op: string | null
     // 値
-    value: string
+    value: string | null
   }[]
 };

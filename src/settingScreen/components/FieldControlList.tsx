@@ -1,8 +1,13 @@
 import { css } from "@emotion/react";
 import { globalStyle } from "../style";
 import { useState, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 import TD_ControlFieldType from './TD_ControlFieldType';
+import { 
+  fieldControlList 
+} from '../store';
+import { deepcp } from "../utils";
 
 const tableBorderColor = '#d8d8d8';
 
@@ -66,22 +71,35 @@ const style = {
 };
 
 export default () => {
-  const [list, setList] = useState([
-    { config: [{}, {}] },
-    { config: [{}, {}] }
-  ]);
+  const [list, setList] = useRecoilState(fieldControlList);
 
   const [formFieldsInfo, setFormFieldsInfo] = useState<any[]>([]);
 
   const addConfig = (listIndex: number, configIndex: number) => {
-    const _list = [...list];
-    _list[listIndex].config.splice(configIndex, 0, {});
+    const _list = deepcp(list);
+    _list[listIndex].config.splice(configIndex, 0, { field: null, op: null, value: null });
     setList(_list);
   };
 
   const removeConfig = (listIndex: number, configIndex: number) => {
-    const _list = [...list];
+    const _list = deepcp(list);
     _list[listIndex].config.splice(configIndex, 1);
+    setList(_list);
+  };
+
+  const addFieldControl = () => {
+    setList([...deepcp(list), { targetField: null, controlType: 'required', config: [{ field: null, op: null, value: null }]}]);
+  };
+
+  const removeFieldControl = (listIndex: number) => {
+    const _list = deepcp(list);
+    if(_list.length === 1) {
+      _list[0].targetField = '';
+      _list[0].controlType = 'required';
+      setList(_list);
+      return;
+    }
+    _list.splice(listIndex, 1);
     setList(_list);
   };
 
@@ -123,26 +141,32 @@ export default () => {
                 return (
                   <tr key={configIndex}>
                     <td rowSpan={e.config.length} className="kintoneplugin-table-td-operation">
-                      <button 
-                        type="button" 
-                        // onClick={() => {}} 
+                      <button
+                        type="button"
+                        onClick={() => { removeFieldControl(listIndex) }} 
                         className="kintoneplugin-button-remove-row-image" 
                         title="制御対象フィールドを削除する"
                       />
                     </td>
-                    <TD_ControlFieldType index={configIndex} rowSpan={e.config.length} formFieldsInfo={formFieldsInfo} />
+                    <TD_ControlFieldType
+                      listIndex={listIndex}
+                      rowSpan={e.config.length}
+                      formFieldsInfo={formFieldsInfo}
+                      list={list}
+                      setList={setList}
+                    />
                     <td>日付</td>
                     <td>＝（等しい）</td>
                     <td>2023/10/01</td>
                     <td className="kintoneplugin-table-td-operation">
-                      <button 
+                      <button
                         type="button" 
                         onClick={() => { addConfig(listIndex, configIndex) }}
                         className="kintoneplugin-button-add-row-image"
                         title="条件を追加する"
                       />
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={() => { e.config.length !== 1 && removeConfig(listIndex, configIndex)}} 
                         className="kintoneplugin-button-remove-row-image" 
                         title="条件を削除する"
@@ -169,7 +193,7 @@ export default () => {
                         className="kintoneplugin-button-remove-row-image" 
                         title="条件を削除する"
                       />
-                      </td>
+                    </td>
                   </tr>
                 )
               }
@@ -178,8 +202,12 @@ export default () => {
           <tr>
             <td></td>
             <td colSpan={5} className="kintoneplugin-table-td-operation">
-              <div className="add-control-target">
-                <button type="button" className="kintoneplugin-button-add-row-image" title="制御対象フィールドを追加する" />
+              <div className="add-control-target" onClick={() => { addFieldControl() }}>
+                <button 
+                  type="button"
+                  className="kintoneplugin-button-add-row-image"
+                  title="制御対象フィールドを追加する" 
+                />
                 <span>制限対象フィールドを追加する</span>
               </div>
             </td>
