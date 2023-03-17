@@ -2,13 +2,78 @@ import { SetterOrUpdater } from 'recoil';
 import { ControlType, FieldControl } from '../type';
 import { deepcp } from '../utils';
 
+type FormFieldsInfo = { 
+  type: string
+  code: string
+  label: string
+  expression: string 
+};
+
 export default (props: {
   listIndex: number
   rowSpan: number
-  formFieldsInfo: { type: string, code: string, label: string, expression: string }[]
+  formFieldsInfo: FormFieldsInfo[]
   list: FieldControl[]
   setList: SetterOrUpdater<FieldControl[]>
 }) => {
+  const filteringFormFields = (formFieldsInfo: FormFieldsInfo[], list: FieldControl[], listIndex: number) => {
+    return formFieldsInfo.filter(e => {
+      if(list[listIndex].controlType === 'required') {
+        switch(e.type) {
+          case 'CATEGORY':
+          case 'CHECK_BOX':
+          case 'DATE':
+          case 'DATETIME':
+          case 'DROP_DOWN':
+          case 'GROUP_SELECT':
+          case 'LINK':
+          case 'MULTI_LINE_TEXT':
+          case 'MULTI_SELECT':
+          case 'NUMBER':
+          case 'ORGANIZATION_SELECT':
+          case 'RADIO_BUTTON':
+          case 'RICH_TEXT':
+          case 'SINGLE_LINE_TEXT':
+          case 'TIME':
+          case 'USER_SELECT':
+            return true;
+          default:
+            return false;
+        }
+      }
+      else if (list[listIndex].controlType === 'uneditable') {
+        switch(e.type) {
+          case 'CATEGORY':
+          case 'CHECK_BOX':
+          case 'DATE':
+          case 'DATETIME':
+          case 'DROP_DOWN':
+          case 'FILE':
+          case 'GROUP_SELECT':
+          case 'LINK':
+          case 'MULTI_LINE_TEXT':
+          case 'MULTI_SELECT':
+          case 'NUMBER':
+          case 'ORGANIZATION_SELECT':
+          case 'RADIO_BUTTON':
+          case 'RICH_TEXT':
+          case 'SINGLE_LINE_TEXT':
+            // 自動計算が設定されている文字列1行は対象外
+            if(e.expression) return false;
+            break;
+          case 'TIME':
+          case 'USER_SELECT':
+            return true;
+          default:
+            return false;
+        }
+      }
+      else {
+        throw new Error('想定外のエラーが発生しました。');
+      }
+    });
+  };
+
   return (
     <>
       <td rowSpan={props.rowSpan}>
@@ -23,45 +88,7 @@ export default (props: {
               }}>
               <option value="" disabled>- - -</option>
               {
-                props.formFieldsInfo.filter(e => {
-                  if(props.list[props.listIndex].controlType === 'required') { // 必須項目
-                    switch(e.type) {
-                      case 'RECORD_NUMBER': // レコード番号
-                      case 'CREATOR': // 作成者
-                      case 'CREATED_TIME': // 作成日時
-                      case 'MODIFIER': // 更新者
-                      case 'UPDATED_TIME': // 更新日時
-                      case 'STATUS': // ステータス
-                      case 'STATUS_ASSIGNEE': // 作業者
-                      case 'CALC': // 計算
-                        return false;
-                      default:
-                        return true;
-                    }
-                  }
-                  else if(props.list[props.listIndex].controlType === 'uneditable') { // 編集不可
-                    switch(e.type) {
-                      case 'RECORD_NUMBER': // レコード番号
-                      case 'CREATOR': // 作成者
-                      case 'CREATED_TIME': // 作成日時
-                      case 'MODIFIER': // 更新者
-                      case 'UPDATED_TIME': // 更新日時
-                      case 'STATUS': // ステータス
-                      case 'STATUS_ASSIGNEE': // 作業者
-                      case 'CALC': // 計算
-                        return false;
-                      case 'SINGLE_LINE_TEXT':
-                        // 自動計算が設定されている文字列1行は対象外
-                        if(e.expression) return false;
-                        return true;
-                      default:
-                        return true;
-                    }
-                  } 
-                  else {
-                    throw new Error('想定外のエラーが発生しました。');
-                  }
-                }).map(e => (
+                filteringFormFields(props.formFieldsInfo, props.list, props.listIndex).map(e => (
                   <option key={e.code} value={e.code}>{e.label}</option>
                 ))
               }

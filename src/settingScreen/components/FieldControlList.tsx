@@ -188,9 +188,9 @@ export default () => {
                         title="条件を追加する"
                       />
                       <button
-                        type="button" 
-                        onClick={() => { e.config.length !== 1 && removeConfig(listIndex, configIndex)}} 
-                        className="kintoneplugin-button-remove-row-image" 
+                        type="button"
+                        onClick={() => { e.config.length !== 1 && removeConfig(listIndex, configIndex)}}
+                        className="kintoneplugin-button-remove-row-image"
                         title="条件を削除する"
                       />
                     </td>
