@@ -1,13 +1,6 @@
 import { SetterOrUpdater } from 'recoil';
-import { ControlType, FieldControl } from '../type';
+import { ControlType, FieldControl, FormFieldsInfo } from '../type';
 import { deepcp } from '../utils';
-
-type FormFieldsInfo = { 
-  type: string
-  code: string
-  label: string
-  expression: string 
-};
 
 export default (props: {
   listIndex: number
@@ -60,7 +53,7 @@ export default (props: {
           case 'SINGLE_LINE_TEXT':
             // 自動計算が設定されている文字列1行は対象外
             if(e.expression) return false;
-            break;
+            return true;
           case 'TIME':
           case 'USER_SELECT':
             return true;
