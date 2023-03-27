@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { FieldControl } from '../type';
+import { FieldControl } from '../../type';
 
 const fieldControlList = atom<FieldControl[]>({
   key: 'fieldControlList',

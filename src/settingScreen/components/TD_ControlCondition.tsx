@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SetterOrUpdater } from 'recoil';
-import { FieldControl, FormFieldsInfo } from '../type';
+import { FieldControl, FormFieldsInfo } from '../../type';
 import { deepcp } from '../utils';
 
 export default (props: {

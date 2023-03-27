@@ -1,5 +1,5 @@
 import { SetterOrUpdater } from 'recoil';
-import { ControlType, FieldControl, FormFieldsInfo } from '../type';
+import { ControlType, FieldControl, FormFieldsInfo } from '../../type';
 import { deepcp } from '../utils';
 
 export default (props: {
