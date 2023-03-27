@@ -18,3 +18,14 @@ export type FieldControl = {
     value: string | null
   }[]
 };
+
+/**
+ * アプリのフォームに設定されているフィールドの取得APIのproperties型
+ * 使用するプロパティのみ記載
+ */
+export type FormFieldsInfo = { 
+  type: string
+  code: string
+  label: string
+  expression: string 
+};

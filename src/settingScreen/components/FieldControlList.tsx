@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 import TD_ControlFieldType from './TD_ControlFieldType';
+import TD_ControlCondition from "./TD_ControlCondition";
 import { 
   fieldControlList 
 } from '../store';
@@ -71,8 +72,9 @@ const style = {
 };
 
 export default () => {
+  // フィールド制御一覧
   const [list, setList] = useRecoilState(fieldControlList);
-
+  // アプリフォーム情報
   const [formFieldsInfo, setFormFieldsInfo] = useState<any[]>([]);
 
   const addConfig = (listIndex: number, configIndex: number) => {
@@ -110,6 +112,7 @@ export default () => {
         const client = new KintoneRestAPIClient();
         const resp = await client.app.getFormFields({ app: kintone.app.getId() as number });
         setFormFieldsInfo(Object.values(resp.properties));
+        console.log(Object.values(resp.properties));
       } catch (e) {
         console.error(e);
       }
@@ -155,12 +158,19 @@ export default () => {
                       list={list}
                       setList={setList}
                     />
-                    <td>日付</td>
-                    <td>＝（等しい）</td>
-                    <td>2023/10/01</td>
+                    <TD_ControlCondition
+                      listIndex={listIndex}
+                      configIndex={configIndex}
+                      formFieldsInfo={formFieldsInfo}
+                      list={list}
+                      setList={setList}
+                    />
+                    {/* <td>日付</td>
+                    <td>=（等しい）</td>
+                    <td>2023/10/01</td> */}
                     <td className="kintoneplugin-table-td-operation">
                       <button
-                        type="button" 
+                        type="button"
                         onClick={() => { addConfig(listIndex, configIndex) }}
                         className="kintoneplugin-button-add-row-image"
                         title="条件を追加する"
@@ -177,9 +187,13 @@ export default () => {
               } else {
                 return (
                   <tr key={configIndex}>
-                    <td>日付</td>
-                    <td>＝（等しい）</td>
-                    <td>2023/10/01</td>
+                    <TD_ControlCondition 
+                      listIndex={listIndex}
+                      configIndex={configIndex}
+                      formFieldsInfo={formFieldsInfo}
+                      list={list}
+                      setList={setList}
+                    />
                     <td className="kintoneplugin-table-td-operation">
                       <button
                         type="button" 
