@@ -9,7 +9,17 @@ const globalStyle = {
     borderLeftStyle: 'solid',
     paddingLeft: '5px',
     marginTop: 0
-  })
+  }),
+  inputDateOrTime: {
+    padding: '10px 5px',
+    border: '1px solid #e3e7e8',
+    outline: 'none',
+    boxShadow: '4px 4px 12px #f5f5f5 inset, -4px -4px 12px #f5f5f5 inset',
+    backgroundColor: '#fff',
+    ':focus': {
+      borderColor: '#3498db'
+    }
+  }
 };
 
 export { globalStyle };
