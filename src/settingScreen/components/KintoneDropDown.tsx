@@ -48,19 +48,21 @@ type Option = {
   value: string | number
 };
 
-const notSelectValue = '-----';
+const unselectValue = '-----';
+const setUnselectValue = (isSet?: boolean) => isSet ? [{ value: '', text: unselectValue, select: false }] : [];
 
 export default (props: {
   value: string | number
   options: Option[]
   onChange?: (value: string | number) => void
+  unselectValue?: boolean
 }) => {
   const [show, setShow] = useState(false);
 
   const [selectValue, setSelectValue] = useState(props.value);
   
   const [selectState, setSelectState] = useState([
-    { value: '', text: notSelectValue, select: false },
+    ...setUnselectValue(props?.unselectValue),
     ...props.options.map(e => ({ value: e.value, text: e.text, select: false }))
   ]);
 
@@ -94,7 +96,7 @@ export default (props: {
   // props.options の値が変化した時のハンドラ
   useSkipEffect(()=>{
     setSelectState([
-      { value: '', text: notSelectValue, select: false },
+      ...setUnselectValue(props?.unselectValue),
       ...props.options.map(e => ({ value: e.value, text: e.text, select: false }))
     ]);
   }, [props.options]);
@@ -104,7 +106,7 @@ export default (props: {
       <div className="kintoneplugin-dropdown" css={style.selected} ref={insideRef}>
         <div className="crossplugins-dropdown-selected">
           <div className="crossplugins-dropdown-selected-item-name">
-            {selectValue ? selectState.find(e => e.value === selectValue)?.text ?? notSelectValue : notSelectValue}
+            {selectValue ? selectState.find(e => e.value === selectValue)?.text ?? unselectValue : unselectValue}
           </div>
           <div className="crossplugins-dropdown-selected-item-icon"></div>
         </div>
