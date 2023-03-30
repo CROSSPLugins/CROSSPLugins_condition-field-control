@@ -1,6 +1,7 @@
 import { SetterOrUpdater } from 'recoil';
 import { ControlType, FieldControl, FormFieldsInfo } from '../../type';
 import { deepcp } from '../utils';
+import KintoneDropDown from './KintoneDropDown';
 
 export default (props: {
   listIndex: number
@@ -70,40 +71,29 @@ export default (props: {
   return (
     <>
       <td rowSpan={props.rowSpan}>
-        <div className="kintoneplugin-select-outer">
-          <div className="kintoneplugin-select">
-            <select 
-              value={props.list[props.listIndex].targetField ?? ''} 
-              onChange={(event) => {
-                const _list = deepcp(props.list);
-                _list[props.listIndex].targetField = event.target.value;
-                props.setList(_list);
-              }}>
-              <option value="" disabled>- - -</option>
-              {
-                filteringFormFields(props.formFieldsInfo, props.list, props.listIndex).map(e => (
-                  <option key={e.code} value={e.code}>{e.label}</option>
-                ))
-              }
-            </select>
-          </div>
-        </div>
+        <KintoneDropDown 
+          value={props.list[props.listIndex].targetField ?? ''}
+          options={
+            filteringFormFields(props.formFieldsInfo, props.list, props.listIndex).map(e => ({ value: e.code, text: e.label }))
+          }
+          onChange={value => {
+            const _list = deepcp(props.list);
+            _list[props.listIndex].targetField = value as string;
+            props.setList(_list);
+          }}
+          unselectValue
+        />
       </td>
       <td rowSpan={props.rowSpan}>
-        <div className="kintoneplugin-select-outer">
-          <div className="kintoneplugin-select">
-            <select 
-              value={props.list[props.listIndex].controlType} 
-              onChange={(event) => {
-                const _list = deepcp(props.list);
-                _list[props.listIndex].controlType = event.target.value as ControlType;
-                props.setList(_list);
-              }}>
-              <option value="required">入力必須</option>
-              <option value="uneditable">編集不可</option>
-            </select>
-          </div>
-        </div>
+        <KintoneDropDown 
+          value={props.list[props.listIndex].controlType}
+          options={[{ value: 'required', text: '入力必須' }, { value: 'uneditable', text: '編集不可' }]}
+          onChange={(value) => {
+            const _list = deepcp(props.list);
+            _list[props.listIndex].controlType = value as ControlType;
+            props.setList(_list);
+          }}
+        />
       </td>
     </>
   );

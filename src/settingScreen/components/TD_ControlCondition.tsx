@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { SetterOrUpdater } from 'recoil';
+import InputDateTime from './InputDateTime';
+import KintoneDropDown from './KintoneDropDown';
 import { FieldControl, FormFieldsInfo } from '../../type';
 import { deepcp } from '../utils';
 
@@ -43,83 +45,61 @@ export default (props: {
       case 'SINGLE_LINE_TEXT':
       case 'LINK':
       case 'CATEGORY':
-        return ['＝（等しい）', '≠（等しくない）', '次のキーワードを含む', '次のキーワードを含まない'].map(e => (
-          <option key={e} value={e}>{e}</option>
-        ));
+        return ['＝（等しい）', '≠（等しくない）', '次のキーワードを含む', '次のキーワードを含まない'].map(e => ({ value: e, text: e }));
       case 'NUMBER':
       case 'CALC':
       case 'RECORD_NUMBER':
-        return ['＝（等しい）', '≠（等しくない）', '＞（以上）', '＜（以下）'].map(e => (
-          <option key={e} value={e}>{e}</option>
-        ));
+        return ['＝（等しい）', '≠（等しくない）', '＞（以上）', '＜（以下）'].map(e => ({ value: e, text: e }));
       case 'MULTI_LINE_TEXT':
-        return ['次のキーワードを含む', '次のキーワードを含まない'].map(e => (
-          <option key={e} value={e}>{e}</option>
-        ));
+        return ['次のキーワードを含む', '次のキーワードを含まない'].map(e => ({ value: e, text: e }));
       case 'CHECK_BOX':
       case 'RADIO_BUTTON':
       case 'DROP_DOWN':
       case 'MULTI_SELECT':
-        return ['次のいずれかを含む', '次のいずれかを含まない'].map(e => (
-          <option key={e} value={e}>{e}</option>
-        ));
+        return ['次のいずれかを含む', '次のいずれかを含まない'].map(e => ({ value: e, text: e }));
       case 'DATE':
       case 'TIME':
       case 'DATETIME':
       case 'CREATED_TIME':
       case 'UPDATED_TIME':
-        return ['＝（等しい）', '≠（等しくない）', '≧（以降）', '≦（以前）'].map(e => (
-          <option key={e} value={e}>{e}</option>
-        ));
+        return ['＝（等しい）', '≠（等しくない）', '≧（以降）', '≦（以前）'].map(e => ({ value: e, text: e }));
       default:
         if(fieldType !== '') throw new Error('想定外のエラーが発生しました。');
+        return [];
     }
   };
 
   return (
     <>
       <td>
-        <div className="kintoneplugin-select-outer">
-          <div className="kintoneplugin-select">
-            <select
-              value={props.list[props.listIndex].config[props.configIndex].field ?? ''}
-              onChange={(event) => {
-                setFieldType(event.target[event.target.selectedIndex].getAttribute('data-fieldtype') as string);
-                const _list = deepcp(props.list);
-                _list[props.listIndex].config[props.configIndex].field = event.target.value;
-                props.setList(_list);
-              }}
-            >
-              <option value="" disabled>- - -</option>
-              {
-                filteringFormFields(props.formFieldsInfo).map(e => (
-                  <option key={e.code} value={e.code} data-fieldtype={e.type}>{e.label}</option>
-                ))
-              }
-            </select>
-          </div>
-        </div>
+        <KintoneDropDown 
+          value={props.list[props.listIndex].config[props.configIndex].field ?? ''}
+          options={
+            filteringFormFields(props.formFieldsInfo).map(e => ({ value: e.code, text: e.label }))
+          }
+          onChange={(value) => {
+            setFieldType(props.formFieldsInfo.find(e => e.code === value)?.type ?? '');
+            const _list = deepcp(props.list);
+            _list[props.listIndex].config[props.configIndex].field = value as string;
+            props.setList(_list);
+          }}
+          unselectValue
+        />
       </td>
       <td>
-        <div className="kintoneplugin-select-outer">
-          <div className="kintoneplugin-select">
-              <select
-                value={props.list[props.listIndex].config[props.configIndex].op ?? ''}
-                onChange={(event) => {
-                  const _list = deepcp(props.list);
-                  _list[props.listIndex].config[props.configIndex].op = event.target.value;
-                  props.setList(_list);
-                }}
-              >
-                <option value="" disabled>- - -</option>
-                {
-                  switchingOperator(fieldType)
-                }
-              </select>
-          </div>
-        </div>
+        <KintoneDropDown 
+          value={props.list[props.listIndex].config[props.configIndex].op ?? ''}
+          options={switchingOperator(fieldType)}
+          onChange={(value) => {
+            const _list = deepcp(props.list);
+            _list[props.listIndex].config[props.configIndex].op = value as string;
+            props.setList(_list);
+          }}
+        />
       </td>
-      <td>2023/10/01</td>
+      <td>
+        <InputDateTime onChange={(value) => { console.log(value) }} />
+      </td>
     </>
   );
 };
