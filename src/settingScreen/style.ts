@@ -16,6 +16,7 @@ const globalStyle = {
     outline: 'none',
     boxShadow: '4px 4px 12px #f5f5f5 inset, -4px -4px 12px #f5f5f5 inset',
     backgroundColor: '#fff',
+    verticalAlign: 'top',
     ':focus': {
       borderColor: '#3498db'
     }
