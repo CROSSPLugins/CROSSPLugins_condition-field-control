@@ -7,15 +7,14 @@ import { useSkipEffect } from "../utils";
  */
 export default (props: {
   value: string
-  onChange?: (value: string) => void }
-  ) => {
+  onChange?: (value: string) => void
+}) => {
   const [date, setDate] = useState(props.value.split('T')[0]);
   const [time, setTime] = useState(props.value.split('T')[1]);
 
   useSkipEffect(() => {
-    props.onChange && props?.onChange(`${date}T${time}:00`);
-  },
-  [date, time]);
+    props.onChange && props?.onChange(`${date}T${time.padEnd(8, ':00')}`);
+  },[date, time]);
 
   useSkipEffect(() => {
     setDate(props.value.split('T')[0]);
@@ -23,7 +22,7 @@ export default (props: {
   },[props.value]);
 
   return (
-    <div>
+    <div style={{ display: 'inline-block' }}>
       <input type="date" css={globalStyle.inputDateOrTime} value={date} onChange={(event) => {
         setDate(event.target.value);
       }} />
