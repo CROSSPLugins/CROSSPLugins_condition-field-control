@@ -2,7 +2,7 @@ import { useState } from "react";
 import { css } from "@emotion/react";
 import { useSkipEffect } from "../../utils";
 import KintoneDropDown from "../KintoneDropDown";
-import KintoneDate from "../KintoneDate";
+import KintoneTime from "../KintoneTime";
 
 const specify = 'specify';
 
@@ -28,13 +28,11 @@ const style = {
 };
 
 /**
- * value が「日付指定」であるか判定する
+ * value が「時間指定」であるか判定する
  */
-const isSpecifyDate = (value: string): boolean => {
+const isSpecifyTime = (value: string): boolean => {
   switch(value) {
-    case 'today':
-    case 'yesterday':
-    case 'tomorrow':
+    case 'now':
       return false;
     default:
       return true;
@@ -42,38 +40,38 @@ const isSpecifyDate = (value: string): boolean => {
 };
 
 type Props = {
-  value: string | 'today' | 'yesterday' | 'tomorrow'
+  value: string | 'now'
   onChange?: (value: string) => void
 };
 
 export default (props: Props) => {
-  const [isStretchDropDown, changeShape] = useState(!isSpecifyDate(props.value));
-  const [date, setDate] = useState(isStretchDropDown ? '' : props.value);
+  const [isStretchDropDown, changeShape] = useState(!isSpecifyTime(props.value));
+  const [time, setTime] = useState(isStretchDropDown ? '' : props.value);
   const [type, setType] = useState(isStretchDropDown ? props.value : specify);
-  
-  // CustomDateForm onChangeイベントハンドラ
+
+  // CustomTimeForm onChangeイベントハンドラ
   useSkipEffect(() => {
-    props.onChange && props.onChange(date);
-  }, [date]);
+    props.onChange && props.onChange(time);
+  }, [time]);
   useSkipEffect(() => {
     if(props.onChange) {
       if(type === specify) {
-        props.onChange(date);
+        props.onChange(time);
       } else {
         props.onChange(type);
       }
     }
   }, [type]);
-  
+
   return (
     <>
       {
         !isStretchDropDown 
           &&
-        <KintoneDate 
-          value={date}
+        <KintoneTime
+          value={time}
           onChange={(value) => {
-            setDate(value);
+            setTime(value);
           }}
         />
       }
@@ -81,7 +79,7 @@ export default (props: Props) => {
         value={type}
         options={
           [
-            { text: '日付指定する', value: specify },
+            { text: '時間指定する', value: specify },
             { text: '今日', value: 'today' },
             { text: '昨日', value: 'yesterday' },
             { text: '明日', value: 'tomorrow' }
