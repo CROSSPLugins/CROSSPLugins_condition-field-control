@@ -35,10 +35,14 @@ const style = {
       padding: '6px 16px 8px 25px',
       ':hover': {
         backgroundColor: '#e2f2fe'
-      }
+      },
+    },
+    ':hover .kintoneplugin-dropdown-list-item:not(:hover)': {
+      backgroundColor: 'transparent'
     },
     '.kintoneplugin-dropdown-list-item-selected': {
-      background: 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAYAAACksgdhAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkVFNDNBMDI0MEIxNjExRTQ5MUVFOTIwNzZCRTVEQkEwIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkVFNDNBMDI1MEIxNjExRTQ5MUVFOTIwNzZCRTVEQkEwIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RUU0M0EwMjIwQjE2MTFFNDkxRUU5MjA3NkJFNURCQTAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RUU0M0EwMjMwQjE2MTFFNDkxRUU5MjA3NkJFNURCQTAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4n981NAAABVElEQVR42mL4//8/AzH44Ydf7D///AOzidJw9eV3Ps/F9392H32V8enHH0ZGsE484Pbbn1y5255/vfb6BwPIpnkBstpMIImvv/8xXnn1gx9dw623P7mztzz7evPNTwZmIN9Onue+DB/rM6a33/4wtR163Zq+6emHY4++ScE03Hjzkweo4cvNtz8Z/v77z2AizXV/gqekur4ExwfG9dc+GiZueHKOj52JQY6fjWGip6QIFxvTz4Jtzz9ff/ODAaiewRykwUtSA2jLL5CBjLfe/OTqPPJq7e47XzzYWZgYFAVZGbhYmRguv/zJ8PPvPwwNYE2ggHj//S9T2a4XW3fc+ewBshFk+tdf/xhMpbmeTvKSVJTmY/2N7Fd46L0DaizfDdR4+7MHiG+GQwMYIMcHKFAiVz86D4qTJx9/seKKN4x4evnlD8vPv/+Z5fhZf+KKO4AAAwB1mv8yxhgabQAAAABJRU5ErkJggg==) no-repeat 7px 8px'
+      background: 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAYAAACksgdhAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkVFNDNBMDI0MEIxNjExRTQ5MUVFOTIwNzZCRTVEQkEwIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkVFNDNBMDI1MEIxNjExRTQ5MUVFOTIwNzZCRTVEQkEwIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RUU0M0EwMjIwQjE2MTFFNDkxRUU5MjA3NkJFNURCQTAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RUU0M0EwMjMwQjE2MTFFNDkxRUU5MjA3NkJFNURCQTAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4n981NAAABVElEQVR42mL4//8/AzH44Ydf7D///AOzidJw9eV3Ps/F9392H32V8enHH0ZGsE484Pbbn1y5255/vfb6BwPIpnkBstpMIImvv/8xXnn1gx9dw623P7mztzz7evPNTwZmIN9Onue+DB/rM6a33/4wtR163Zq+6emHY4++ScE03Hjzkweo4cvNtz8Z/v77z2AizXV/gqekur4ExwfG9dc+GiZueHKOj52JQY6fjWGip6QIFxvTz4Jtzz9ff/ODAaiewRykwUtSA2jLL5CBjLfe/OTqPPJq7e47XzzYWZgYFAVZGbhYmRguv/zJ8PPvPwwNYE2ggHj//S9T2a4XW3fc+ewBshFk+tdf/xhMpbmeTvKSVJTmY/2N7Fd46L0DaizfDdR4+7MHiG+GQwMYIMcHKFAiVz86D4qTJx9/seKKN4x4evnlD8vPv/+Z5fhZf+KKO4AAAwB1mv8yxhgabQAAAABJRU5ErkJggg==) no-repeat 7px 8px',
+      backgroundColor: '#e2f2fe'
     }
   }),
   toggle: (_: boolean) => !_ && css({ display: 'none' })
@@ -126,7 +130,7 @@ export default (props: Props) => {
           selectState.map((e, i) => (
             <div
               key={i}
-              className={`kintoneplugin-dropdown-list-item ${e.select ? 'kintoneplugin-dropdown-list-item-selected' : ''}`} 
+              className={`kintoneplugin-dropdown-list-item ${e.select ? 'kintoneplugin-dropdown-list-item-selected' : ''}`}
               onClick={() => {
                 const _selectState = selectState.map((f, y) => y === i ? ({ ...f, select: true }) : ({ ...f, select: false }));
                 setSelectState(_selectState);
