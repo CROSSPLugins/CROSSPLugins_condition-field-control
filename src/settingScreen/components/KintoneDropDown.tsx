@@ -45,7 +45,20 @@ const style = {
       backgroundColor: '#e2f2fe'
     }
   }),
-  toggle: (_: boolean) => !_ && css({ display: 'none' })
+  toggle: (_: boolean) => !_ && css({ display: 'none' }),
+  disable: (_?: boolean) => _ && css({
+    '.kintoneplugin-dropdown': {
+      color: '#888',
+      backgroundColor: '#d4d7d7',
+      boxShadow: 'none'
+    },
+    '.kintoneplugin-dropdown:hover': {
+      cursor: 'not-allowed'
+    },
+    '.kintoneplugin-dropdown:active': {
+      pointerEvents: 'none'
+    }
+  })
 };
 
 type Option = {
@@ -62,6 +75,7 @@ type Props = {
   onChange?: (value: string | number) => void
   unselectValue?: boolean
   overcss?: SerializedStyles
+  disabled?: boolean
 };
 
 export default (props: Props) => {
@@ -116,7 +130,7 @@ export default (props: Props) => {
   }, [props.options]);
 
   return (
-    <div className="kintoneplugin-dropdown-outer" css={[style.outer, props.overcss]}>
+    <div className="kintoneplugin-dropdown-outer" css={[style.outer, props.overcss, style.disable(props.disabled)]}>
       <div className="kintoneplugin-dropdown" css={style.selected} ref={insideRef}>
         <div className="crossplugins-dropdown-selected">
           <div className="crossplugins-dropdown-selected-item-name">
