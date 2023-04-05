@@ -9,6 +9,7 @@ import {
   fieldControlList 
 } from '../store';
 import { deepcp } from "../utils";
+import { NOCONDITION } from "../../const";
 
 const tableBorderColor = '#d8d8d8';
 
@@ -79,7 +80,7 @@ export default () => {
 
   const addConfig = (listIndex: number, configIndex: number) => {
     const _list = deepcp(list);
-    _list[listIndex].config.splice(configIndex, 0, { field: null, op: null, value: null });
+    _list[listIndex].config.splice(configIndex, 0, { field: NOCONDITION, op: null, value: null });
     setList(_list);
   };
 
@@ -90,7 +91,7 @@ export default () => {
   };
 
   const addFieldControl = () => {
-    setList([...deepcp(list), { targetField: null, controlType: 'required', config: [{ field: null, op: null, value: null }]}]);
+    setList([...deepcp(list), { targetField: null, controlType: 'required', config: [{ field: NOCONDITION, op: null, value: null }]}]);
   };
 
   const removeFieldControl = (listIndex: number) => {
@@ -165,9 +166,6 @@ export default () => {
                       list={list}
                       setList={setList}
                     />
-                    {/* <td>日付</td>
-                    <td>=（等しい）</td>
-                    <td>2023/10/01</td> */}
                     <td className="kintoneplugin-table-td-operation">
                       <button
                         type="button"

@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { NOCONDITION } from '../../const';
 import { FieldControl } from '../../type';
 
 const fieldControlList = atom<FieldControl[]>({
@@ -9,7 +10,7 @@ const fieldControlList = atom<FieldControl[]>({
       controlType: 'required',
       config: [
         {
-          field: null,
+          field: NOCONDITION,
           op: null,
           value: null
         }

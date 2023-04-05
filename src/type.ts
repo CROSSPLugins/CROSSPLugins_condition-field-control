@@ -11,7 +11,7 @@ export type FieldControl = {
   // 制御の条件設定一覧
   config: {
     // 制御条件対象フィールドコード
-    field: string | null
+    field: string
     // オペレーター
     op: string | null
     // 値
