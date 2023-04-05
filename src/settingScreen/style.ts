@@ -10,7 +10,7 @@ const globalStyle = {
     paddingLeft: '5px',
     marginTop: 0
   }),
-  inputDateOrTime: {
+  inputDateOrTime: css({
     padding: '10px 5px',
     border: '1px solid #e3e7e8',
     outline: 'none',
@@ -20,7 +20,7 @@ const globalStyle = {
     ':focus': {
       borderColor: '#3498db'
     }
-  }
+  })
 };
 
 export { globalStyle };
