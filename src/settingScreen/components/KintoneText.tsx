@@ -11,8 +11,8 @@ const style = {
 };
 
 type Props = {
-  value: string
-  onChange?: (value: string) => void
+  value: string | number
+  onChange?: (value: string | number) => void
 };
 
 export default (props: Props) => {
