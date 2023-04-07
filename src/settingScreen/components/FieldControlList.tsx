@@ -5,9 +5,7 @@ import { useRecoilState } from 'recoil';
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 import TD_ControlFieldType from './TD_ControlFieldType';
 import TD_ControlCondition from "./TD_ControlCondition";
-import { 
-  fieldControlList 
-} from '../store';
+import { fieldControlList } from '../store';
 import { deepcp } from "../utils";
 import { NOCONDITION } from "../../const";
 
@@ -156,15 +154,11 @@ export default () => {
                       listIndex={listIndex}
                       rowSpan={e.config.length}
                       formFieldsInfo={formFieldsInfo}
-                      list={list}
-                      setList={setList}
                     />
                     <TD_ControlCondition
                       listIndex={listIndex}
                       configIndex={configIndex}
                       formFieldsInfo={formFieldsInfo}
-                      list={list}
-                      setList={setList}
                     />
                     <td className="kintoneplugin-table-td-operation">
                       <button
@@ -189,8 +183,6 @@ export default () => {
                       listIndex={listIndex}
                       configIndex={configIndex}
                       formFieldsInfo={formFieldsInfo}
-                      list={list}
-                      setList={setList}
                     />
                     <td className="kintoneplugin-table-td-operation">
                       <button
