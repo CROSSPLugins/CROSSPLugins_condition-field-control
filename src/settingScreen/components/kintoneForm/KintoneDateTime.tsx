@@ -1,6 +1,6 @@
-import { globalStyle } from "../style";
+import { globalStyle } from "../../style";
 import { useState } from 'react';
-import { useSkipEffect } from "../utils";
+import { useSkipEffect } from "../../utils";
 
 /**
  * @param onChange - Event handler fired when the entered value changes

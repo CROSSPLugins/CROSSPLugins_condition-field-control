@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { useState } from "react";
-import { useSkipEffect } from "../utils";
+import { useSkipEffect } from "../../utils";
 
 const style = {
   inputText: css({

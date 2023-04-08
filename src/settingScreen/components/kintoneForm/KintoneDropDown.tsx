@@ -1,6 +1,6 @@
 import { css, SerializedStyles } from "@emotion/react";
 import { useState, useRef, useEffect } from 'react';
-import { useSkipEffect } from "../utils";
+import { useSkipEffect } from "../../utils";
 
 const style = {
   outer: css({

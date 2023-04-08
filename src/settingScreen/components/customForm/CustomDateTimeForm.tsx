@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { css } from "@emotion/react";
 import { useSkipEffect } from "../../utils";
-import KintoneDropDown from "../KintoneDropDown";
-import KintoneDateTime from "../KintoneDateTime";
+import KintoneDropDown from "../kintoneForm/KintoneDropDown";
+import KintoneDateTime from "../kintoneForm/KintoneDateTime";
 
 const specify = 'specify';
 

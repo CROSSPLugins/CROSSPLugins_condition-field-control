@@ -2,7 +2,7 @@ import { useRecoilState } from 'recoil';
 import { ControlType, FieldControl, FormFieldsInfo } from '../../type';
 import { deepcp } from '../utils';
 import { fieldControlList } from '../store';
-import KintoneDropDown from './KintoneDropDown';
+import KintoneDropDown from './kintoneForm/KintoneDropDown';
 
 const filteringFormFields = (formFieldsInfo: FormFieldsInfo[], list: FieldControl[], listIndex: number) => {
   return formFieldsInfo.filter(e => {

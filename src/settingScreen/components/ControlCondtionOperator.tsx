@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useRecoilState } from "recoil";
 import { fieldControlList } from "../store";
 import { ControlConditionContext } from "./TD_ControlCondition";
-import KintoneDropDown from "./KintoneDropDown";
+import KintoneDropDown from "./kintoneForm/KintoneDropDown";
 import { deepcp } from "../utils";
 
 /**
