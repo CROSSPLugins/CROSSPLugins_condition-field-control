@@ -3,12 +3,18 @@ import FieldControlList from './FieldControlList';
 
 const style = {
   container: css({
+    position: 'relative',
     backgroundColor: '#F7F9FA',
     padding: '1rem',
     boxSizing: 'border-box',
-    minHeight: '600px'
+    minHeight: '600px',
+    '>:nth-last-of-type(2)': {
+      marginBottom: '6rem'
+    }
   }),
   buttons: css({
+    position: 'absolute',
+    bottom: '2rem',
     '.kintoneplugin-button-normal': {
       marginRight: '10px'
     }
