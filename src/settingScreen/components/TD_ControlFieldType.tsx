@@ -79,7 +79,8 @@ export default (props: {
           }
           onChange={value => {
             const _list = deepcp(list);
-            _list[props.listIndex].targetField = value as string;
+            // value === '' の場合は、nullを挿入する
+            _list[props.listIndex].targetField = value === '' ? null : value as string;
             setList(_list);
           }}
           unselectValue
@@ -89,7 +90,7 @@ export default (props: {
         <KintoneDropDown 
           value={list[props.listIndex].controlType}
           options={[{ value: 'required', text: '入力必須' }, { value: 'uneditable', text: '編集不可' }]}
-          onChange={(value) => {
+          onChange={value => {
             const _list = deepcp(list);
             _list[props.listIndex].controlType = value as ControlType;
             setList(_list);

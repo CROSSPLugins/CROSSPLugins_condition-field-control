@@ -78,6 +78,9 @@ type Props = {
   disabled?: boolean
 };
 
+/**
+ * unselectValue … 選択肢に { text: '-----', value: '' } が先頭に自動的に追加される
+ */
 export default (props: Props) => {
   const [show, setShow] = useState(false);
 
@@ -134,7 +137,7 @@ export default (props: Props) => {
       <div className="kintoneplugin-dropdown" css={style.selected} ref={insideRef}>
         <div className="crossplugins-dropdown-selected">
           <div className="crossplugins-dropdown-selected-item-name">
-            {selectValue ? selectState.find(e => e.value === selectValue)?.text ?? unselectValue : unselectValue}
+            {selectState.find(e => e.value === selectValue)?.text ?? unselectValue}
           </div>
           <div className="crossplugins-dropdown-selected-item-icon"></div>
         </div>

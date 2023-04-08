@@ -1,103 +1,60 @@
-import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React from 'react';
+import { useState, createContext } from 'react';
+import { useRecoilValue } from 'recoil';
 import { fieldControlList } from '../store';
-import KintoneDropDown from './KintoneDropDown';
 import { FormFieldsInfo } from '../../type';
-import { deepcp } from '../utils';
+import ControlConditionField from './ControlConditionField';
+import ControlCondtionOperator from './ControlCondtionOperator';
+import ControlConditionValueForm from './ControlConditionValueForm';
 
-const filteringFormFields = (formFieldsInfo: FormFieldsInfo[]) => {
-  return formFieldsInfo.filter(e => {
-    switch(e.type) {
-      case 'CALC':
-      case 'CATEGORY':
-      case 'CHECK_BOX':
-      case 'CREATED_TIME':
-      case 'DATE':
-      case 'DATETIME':
-      case 'DROP_DOWN':
-      case 'LINK':
-      case 'MULTI_LINE_TEXT':
-      case 'MULTI_SELECT':
-      case 'NUMBER':
-      case 'RADIO_BUTTON':
-      case 'RECORD_NUMBER':
-      case 'SINGLE_LINE_TEXT':
-      case 'TIME':
-      case 'UPDATED_TIME':
-        return true;
-      default:
-        return false;
-    }
-  });
-};
-
-const switchingOperator = (fieldType: string) => {
-  switch(fieldType) {
-    case 'SINGLE_LINE_TEXT':
-    case 'LINK':
-    case 'CATEGORY':
-      return ['＝（等しい）', '≠（等しくない）', '次のキーワードを含む', '次のキーワードを含まない'].map(e => ({ value: e, text: e }));
-    case 'NUMBER':
-    case 'CALC':
-    case 'RECORD_NUMBER':
-      return ['＝（等しい）', '≠（等しくない）', '＞（以上）', '＜（以下）'].map(e => ({ value: e, text: e }));
-    case 'MULTI_LINE_TEXT':
-      return ['次のキーワードを含む', '次のキーワードを含まない'].map(e => ({ value: e, text: e }));
-    case 'CHECK_BOX':
-    case 'RADIO_BUTTON':
-    case 'DROP_DOWN':
-    case 'MULTI_SELECT':
-      return ['次のいずれかを含む', '次のいずれかを含まない'].map(e => ({ value: e, text: e }));
-    case 'DATE':
-    case 'TIME':
-    case 'DATETIME':
-    case 'CREATED_TIME':
-    case 'UPDATED_TIME':
-      return ['＝（等しい）', '≠（等しくない）', '≧（以降）', '≦（以前）'].map(e => ({ value: e, text: e }));
-    default:
-      if(fieldType !== '') throw new Error('想定外のエラーが発生しました。');
-      return [];
-  }
-};
+export const ControlConditionContext = createContext({} as {
+  listIndex: number
+  configIndex: number
+  formFieldsInfo: FormFieldsInfo[]
+  fieldType: string | null
+  setFieldType: React.Dispatch<React.SetStateAction<string | null>>
+});
 
 export default (props: {
   listIndex: number
   configIndex: number
   formFieldsInfo: FormFieldsInfo[]
 }) => {
-  const [fieldType, setFieldType] = useState('');
-  const [list, setList] = useRecoilState(fieldControlList);
+  const list = useRecoilValue(fieldControlList);
+  const [fieldError, setFieldError] = useState(false);
+  const [fieldType, setFieldType] = useState(() => {
+    if(list[props.listIndex].config[props.configIndex].field) {
+      const result = props.formFieldsInfo.filter(e => e.code === list[props.listIndex].config[props.configIndex].field);
+      if(result.length) {
+        return result[0].type;
+      } else {
+        // 「制限対象フィールド」に設定していたフィールド情報がない
+        setFieldError(true);
+        return null;
+      }
+    } else {
+      return null;
+    }
+  });
 
   return (
-    <>
+    <ControlConditionContext.Provider 
+      value={{ 
+        listIndex: props.listIndex,
+        configIndex: props.configIndex,
+        formFieldsInfo: props.formFieldsInfo,
+        fieldType,
+        setFieldType
+      }}>
       <td>
-        <KintoneDropDown 
-          value={list[props.listIndex].config[props.configIndex].field ?? ''}
-          options={
-            filteringFormFields(props.formFieldsInfo).map(e => ({ value: e.code, text: e.label }))
-          }
-          onChange={(value) => {
-            setFieldType(props.formFieldsInfo.find(e => e.code === value)?.type ?? '');
-            const _list = deepcp(list);
-            _list[props.listIndex].config[props.configIndex].field = value as string;
-            setList(_list);
-          }}
-          unselectValue
-        />
+        <ControlConditionField error={fieldError} />
       </td>
       <td>
-        <KintoneDropDown 
-          value={list[props.listIndex].config[props.configIndex].op ?? ''}
-          options={switchingOperator(fieldType)}
-          onChange={(value) => {
-            const _list = deepcp(list);
-            _list[props.listIndex].config[props.configIndex].op = value as string;
-            setList(_list);
-          }}
-        />
+        <ControlCondtionOperator />
       </td>
       <td>
+        <ControlConditionValueForm />
       </td>
-    </>
+    </ControlConditionContext.Provider>
   );
 };

@@ -11,11 +11,11 @@ export type FieldControl = {
   // 制御の条件設定一覧
   config: {
     // 制御条件対象フィールドコード
-    field: string
+    field: string | null
     // オペレーター
     op: string | null
     // 値
-    value: string | null
+    value: string | number | (string | number)[] | null
   }[]
 };
 
@@ -27,5 +27,10 @@ export type FormFieldsInfo = {
   type: string
   code: string
   label: string
-  expression: string 
+  expression: string
+  options: {
+    [optionname: string]: {
+      label: string
+    }
+  }
 };
