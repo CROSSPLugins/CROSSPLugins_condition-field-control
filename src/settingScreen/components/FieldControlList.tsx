@@ -28,6 +28,9 @@ const style = {
     'td:last-of-type': {
       borderRight: `1px solid ${tableBorderColor}`
     },
+    'td:not(.kintoneplugin-table-td-operation)': {
+      verticalAlign: 'top'
+    },
     'thead tr:first-of-type th:first-of-type, thead tr:first-of-type th:last-of-type': {
       borderTop: 'none',
       backgroundColor: 'transparent'

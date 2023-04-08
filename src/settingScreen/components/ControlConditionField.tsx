@@ -5,6 +5,7 @@ import KintoneDropDown from "./kintoneForm/KintoneDropDown";
 import { useContext } from "react";
 import { FormFieldsInfo } from "../../type";
 import { deepcp } from "../utils";
+import FormErrorLabel from "./FormErrorLabel";
 
 /**
  * 「制御の条件設定」のフィールドに選択できるフィールド情報を絞り込む
@@ -92,10 +93,9 @@ export default (props: Props) => {
           setList(_list);
         }}
       />
-      {
-        props.error &&
-        <div>再設定してください</div>
-      }
+      <FormErrorLabel error={props.error}>
+        再設定してください
+      </FormErrorLabel>
     </>
   );
 };
