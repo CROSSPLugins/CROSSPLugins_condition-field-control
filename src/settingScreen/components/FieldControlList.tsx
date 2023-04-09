@@ -3,6 +3,7 @@ import { globalStyle } from "../style";
 import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
+import { v4 as uuidv4 } from 'uuid';
 import TD_ControlFieldType from './TD_ControlFieldType';
 import TD_ControlCondition from "./TD_ControlCondition";
 import { fieldControlList } from '../store';
@@ -80,7 +81,7 @@ export default () => {
 
   const addConfig = (listIndex: number, configIndex: number) => {
     const _list = deepcp(list);
-    _list[listIndex].config.splice(configIndex, 0, { field: null, op: null, value: null });
+    _list[listIndex].config.splice(configIndex + 1, 0, { field: null, op: null, value: null, id: uuidv4() });
     setList(_list);
   };
 
@@ -95,9 +96,10 @@ export default () => {
       ...deepcp(list), 
       { 
         targetField: null, 
-        controlType: 'required', 
+        controlType: 'required',
+        id: uuidv4(),
         config: [
-          { field: null, op: null, value: null }
+          { field: null, op: null, value: null, id: uuidv4() }
         ]
       }
     ]);
@@ -152,7 +154,7 @@ export default () => {
             list.map((e, listIndex) => e.config.map((f, configIndex)=>{
               if(configIndex === 0) {
                 return (
-                  <tr key={configIndex}>
+                  <tr key={`${e.id}_${f.id}`}>
                     <td rowSpan={e.config.length} className="kintoneplugin-table-td-operation">
                       <button
                         type="button"
@@ -189,7 +191,7 @@ export default () => {
                 )
               } else {
                 return (
-                  <tr key={configIndex}>
+                  <tr key={`${e.id}_${f.id}`}>
                     <TD_ControlCondition 
                       listIndex={listIndex}
                       configIndex={configIndex}

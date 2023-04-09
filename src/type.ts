@@ -3,20 +3,22 @@ export type ControlType =
   'required' // 必須項目
 ;
 
+export type FieldControlConfig = {
+  // 制御条件対象フィールドコード
+  field: string | null
+  // オペレーター
+  op: string | null
+  // 値
+  value: string | number | (string | number)[] | null
+};
+
 export type FieldControl = {
   // 制御対象フィールドコード
   targetField: string | null
   // 制御の種類
   controlType: ControlType
   // 制御の条件設定一覧
-  config: {
-    // 制御条件対象フィールドコード
-    field: string | null
-    // オペレーター
-    op: string | null
-    // 値
-    value: string | number | (string | number)[] | null
-  }[]
+  config: FieldControlConfig[]
 };
 
 /**
