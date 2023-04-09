@@ -5,11 +5,10 @@ import { RecoilRoot } from 'recoil';
 import App from './App';
 
 (($PLUGIN_ID) => {
-  console.log('config:', kintone.plugin.app.getConfig($PLUGIN_ID));
   const root = createRoot(document.getElementById('app') as HTMLElement);
   root.render(
     <RecoilRoot>
-      <App></App>
+      <App pluginId={$PLUGIN_ID}></App>
     </RecoilRoot>
   );
 })(kintone.$PLUGIN_ID);

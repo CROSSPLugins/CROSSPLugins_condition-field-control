@@ -36,3 +36,19 @@ export type FormFieldsInfo = {
     }
   }
 };
+
+// システム設定
+export type SystemSetting = {
+  _: any
+};
+
+// カスタマイズ設定
+export type CustomizeSetting = {
+  fieldControlList: FieldControl[]
+};
+
+// プラグイン設定
+export type PluginSetting = {
+  systemSetting?: SystemSetting
+  customizeSetting?: CustomizeSetting
+};
