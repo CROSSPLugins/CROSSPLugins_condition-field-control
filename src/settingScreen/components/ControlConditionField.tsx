@@ -55,7 +55,7 @@ export default (props: Props) => {
   return (
     <>
       <KintoneDropDown 
-        value={list[listIndex].config[configIndex].field ?? ''}
+        value={list[listIndex].config[configIndex].field.value ?? ''}
         options={[
           ...setNoConditionOption(isFirst),
           ...filteringFormFields(formFieldsInfo).map(e => ({ value: e.code, text: e.label }))
@@ -77,22 +77,22 @@ export default (props: Props) => {
             case 'DATETIME':
             case 'CREATED_TIME':
             case 'UPDATED_TIME':
-              _list[listIndex].config[configIndex].value = '';
+              _list[listIndex].config[configIndex].value.value = '';
               break;
             case 'CHECK_BOX':
             case 'RADIO_BUTTON':
             case 'DROP_DOWN':
             case 'MULTI_SELECT':
-              _list[listIndex].config[configIndex].value = [];
+              _list[listIndex].config[configIndex].value.value = [];
               break;
             case null:
-              _list[listIndex].config[configIndex].value = null;
+              _list[listIndex].config[configIndex].value.value = null;
               break;
             default:
               throw new Error('予期せぬエラーが発生しました。');
           }
           // value === '' の場合は、nullを挿入する
-          _list[listIndex].config[configIndex].field = value === '' ? null : value as string;
+          _list[listIndex].config[configIndex].field.value = value === '' ? null : value as string;
           setList(_list);
         }}
       />

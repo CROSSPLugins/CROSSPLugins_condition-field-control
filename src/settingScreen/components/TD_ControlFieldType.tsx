@@ -1,12 +1,12 @@
 import { useRecoilState } from 'recoil';
-import { ControlType, FieldControl, FormFieldsInfo } from '../../type';
+import { ControlType, FormFieldsInfo } from '../../type';
 import { deepcp } from '../utils';
-import { fieldControlList } from '../store';
+import { fieldControlList, CustomFieldControl } from '../store';
 import KintoneDropDown from './kintoneForm/KintoneDropDown';
 
-const filteringFormFields = (formFieldsInfo: FormFieldsInfo[], list: FieldControl[], listIndex: number) => {
+const filteringFormFields = (formFieldsInfo: FormFieldsInfo[], list: CustomFieldControl[], listIndex: number) => {
   return formFieldsInfo.filter(e => {
-    if(list[listIndex].controlType === 'required') {
+    if(list[listIndex].controlType.value === 'required') {
       switch(e.type) {
         case 'CATEGORY':
         case 'CHECK_BOX':
@@ -29,7 +29,7 @@ const filteringFormFields = (formFieldsInfo: FormFieldsInfo[], list: FieldContro
           return false;
       }
     }
-    else if (list[listIndex].controlType === 'uneditable') {
+    else if (list[listIndex].controlType.value === 'uneditable') {
       switch(e.type) {
         case 'CATEGORY':
         case 'CHECK_BOX':
@@ -73,14 +73,14 @@ export default (props: {
     <>
       <td rowSpan={props.rowSpan}>
         <KintoneDropDown 
-          value={list[props.listIndex].targetField ?? ''}
+          value={list[props.listIndex].targetField.value ?? ''}
           options={
             filteringFormFields(props.formFieldsInfo, list, props.listIndex).map(e => ({ value: e.code, text: e.label }))
           }
           onChange={value => {
             const _list = deepcp(list);
             // value === '' の場合は、nullを挿入する
-            _list[props.listIndex].targetField = value === '' ? null : value as string;
+            _list[props.listIndex].targetField.value = value === '' ? null : value as string;
             setList(_list);
           }}
           unselectValue
@@ -88,11 +88,11 @@ export default (props: {
       </td>
       <td rowSpan={props.rowSpan}>
         <KintoneDropDown 
-          value={list[props.listIndex].controlType}
+          value={list[props.listIndex].controlType.value}
           options={[{ value: 'required', text: '入力必須' }, { value: 'uneditable', text: '編集不可' }]}
           onChange={value => {
             const _list = deepcp(list);
-            _list[props.listIndex].controlType = value as ControlType;
+            _list[props.listIndex].controlType.value = value as ControlType;
             setList(_list);
           }}
         />

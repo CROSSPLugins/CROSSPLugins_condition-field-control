@@ -1,5 +1,8 @@
 import { css } from '@emotion/react';
+import { useRecoilValue } from 'recoil';
 import FieldControlList from './FieldControlList';
+import { fieldControlList } from '../store';
+import { PluginSetting } from '../../type';
 
 const style = {
   container: css({
@@ -22,21 +25,34 @@ const style = {
   toggle: (_: boolean) => !_ && css({ display: 'none'})
 };
 
-const savePluginSettings = () => {
-  kintone.plugin.app.setConfig(
-    {
-      // ライセンスキー
-      licensekey: 'XXXX-XXXX-XXXX-XXXX'
-      // カスタマイズ(ユーザ画面)に関する設定は各プラグインで追加する
-      // customizeSettings: 'サンプル設定'
-    },
-    () => {
-      console.log('設定完了');
-    }
-  );
-};
-
 export default (props: { show: boolean }) => {
+  const _fieldControlList = useRecoilValue(fieldControlList);
+
+  const savePluginSettings = () => {
+    // ValueCheck
+
+    const pluginSetting: PluginSetting = {
+      systemSetting: { _: {} },
+      customizeSetting: {
+        fieldControlList: _fieldControlList.map(e => ({
+          targetField: e.targetField.value,
+          controlType: e.controlType.value,
+          config: e.config.map(f => ({
+            field: f.field.value,
+            op: f.op.value,
+            value: f.value.value
+          }))
+        }))
+      }
+    };
+    kintone.plugin.app.setConfig(
+      pluginSetting,
+      () => {
+        console.log('設定完了');
+      }
+    );
+  };
+
   return (
     <div css={[style.container, style.toggle(props.show)]}>
       <FieldControlList />

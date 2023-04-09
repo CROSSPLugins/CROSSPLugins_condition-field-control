@@ -21,12 +21,15 @@ export default (props: Props) => {
       setFieldControlList(
         config.customizeSetting.fieldControlList.map(e => {
           return {
-            ...e,
             id: uuidv4(),
+            targetField: { value: e.targetField, fieldError: false, errorText: '' },
+            controlType: { value: e.controlType, fieldError: false, errorText: '' },
             config: e.config.map(f => {
               return {
-                ...f,
-                id: uuidv4()
+                id: uuidv4(),
+                field: { value: f.field, fieldError: false, errorText: ''},
+                op: { value: f.op, fieldError: false, errorText: '' },
+                value: { value: f.value, fieldError: false, errorText: '' }
               }
             })
           }

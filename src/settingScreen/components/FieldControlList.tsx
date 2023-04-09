@@ -81,7 +81,14 @@ export default () => {
 
   const addConfig = (listIndex: number, configIndex: number) => {
     const _list = deepcp(list);
-    _list[listIndex].config.splice(configIndex + 1, 0, { field: null, op: null, value: null, id: uuidv4() });
+    _list[listIndex].config.splice(configIndex + 1, 0, 
+      {
+        id: uuidv4(),
+        field: { value: null, fieldError: false, errorText: '' }, 
+        op: { value: null, fieldError: false, errorText: '' },
+        value: { value: null, fieldError: false, errorText: '' }  
+      }
+    );
     setList(_list);
   };
 
@@ -93,13 +100,18 @@ export default () => {
 
   const addFieldControl = () => {
     setList([
-      ...deepcp(list), 
-      { 
-        targetField: null, 
-        controlType: 'required',
+      ...deepcp(list),
+      {
         id: uuidv4(),
+        targetField: { value: null, fieldError: false, errorText: '' },
+        controlType: { value: 'required', fieldError: false, errorText: '' },
         config: [
-          { field: null, op: null, value: null, id: uuidv4() }
+          {
+            id: uuidv4(),
+            field: { value: null, fieldError: false, errorText: '' },
+            op: { value: null, fieldError: false, errorText: '' },
+            value: { value: null, fieldError: false, errorText: '' }
+          }
         ]
       }
     ]);
@@ -108,8 +120,17 @@ export default () => {
   const removeFieldControl = (listIndex: number) => {
     const _list = deepcp(list);
     if(_list.length === 1) {
-      _list[0].targetField = '';
-      _list[0].controlType = 'required';
+      // 初期値に設定する
+      _list[0].targetField = { value: null, fieldError: false, errorText: '' };
+      _list[0].controlType = { value: 'required', fieldError: false, errorText: '' };
+      _list[0].config = [
+        {
+          id: _list[0].id,
+          field: { value: null, fieldError: false, errorText: '' },
+          op: { value: null, fieldError: false, errorText: '' },
+          value: { value: null, fieldError: false, errorText: '' }
+        }
+      ]
       setList(_list);
       return;
     }
@@ -177,7 +198,7 @@ export default () => {
                     <td className="kintoneplugin-table-td-operation">
                       <button
                         type="button"
-                        onClick={() => { list[listIndex].config[configIndex].field !== null && addConfig(listIndex, configIndex) }}
+                        onClick={() => { list[listIndex].config[configIndex].field.value !== null && addConfig(listIndex, configIndex) }}
                         className="kintoneplugin-button-add-row-image"
                         title="条件を追加する"
                       />

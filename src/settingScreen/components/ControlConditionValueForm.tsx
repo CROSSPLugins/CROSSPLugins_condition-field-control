@@ -26,7 +26,7 @@ export default () => {
   } = useContext(ControlConditionContext);
 
   const render = useCallback(() => {
-    const configValue = list[listIndex].config[configIndex].value;
+    const configValue = list[listIndex].config[configIndex].value.value;
     switch(fieldType) {
       case 'SINGLE_LINE_TEXT':
       case 'LINK':
@@ -41,7 +41,7 @@ export default () => {
               value={configValue ?? ''}
               onChange={value => {
                 const _list = deepcp(list);
-                _list[listIndex].config[configIndex].value = value;
+                _list[listIndex].config[configIndex].value.value = value;
                 setList(_list);
               }}
             />
@@ -59,7 +59,7 @@ export default () => {
               options={
                 Object.values(
                   formFieldsInfo
-                    .filter(e => e.code === list[listIndex].config[configIndex].field)[0].options)
+                    .filter(e => e.code === list[listIndex].config[configIndex].field.value)[0].options)
                     .map(e => {
                       if(configValue.some(f => f === e.label)) {
                         return { value: e.label, checked: false };
@@ -70,7 +70,7 @@ export default () => {
                 }
               onChange={value => {
                 const _list = deepcp(list);
-                _list[listIndex].config[configIndex].value = value;
+                _list[listIndex].config[configIndex].value.value = value;
                 setList(_list);
               }}
             />
@@ -85,7 +85,7 @@ export default () => {
               value={configValue}
               onChange={value => {
                 const _list = deepcp(list);
-                _list[listIndex].config[configIndex].value = value;
+                _list[listIndex].config[configIndex].value.value = value;
                 setList(_list);
               }}
             />
@@ -100,7 +100,7 @@ export default () => {
               value={configValue}
               onChange={value => {
                 const _list = deepcp(list);
-                _list[listIndex].config[configIndex].value = value;
+                _list[listIndex].config[configIndex].value.value = value;
                 setList(_list);
               }}
             />
@@ -117,7 +117,7 @@ export default () => {
               value={configValue}
               onChange={value => {
                 const _list = deepcp(list);
-                _list[listIndex].config[configIndex].value = value;
+                _list[listIndex].config[configIndex].value.value = value;
                 setList(_list);
               }}
             />

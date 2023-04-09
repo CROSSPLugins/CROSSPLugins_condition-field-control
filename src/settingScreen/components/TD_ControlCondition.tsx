@@ -25,8 +25,8 @@ export default (props: {
   const list = useRecoilValue(fieldControlList);
   const [fieldError, setFieldError] = useState(false);
   const [fieldType, setFieldType] = useState(() => {
-    if(list[props.listIndex].config[props.configIndex].field) {
-      const result = props.formFieldsInfo.filter(e => e.code === list[props.listIndex].config[props.configIndex].field);
+    if(list[props.listIndex].config[props.configIndex].field.value) {
+      const result = props.formFieldsInfo.filter(e => e.code === list[props.listIndex].config[props.configIndex].field.value);
       if(result.length) {
         return result[0].type;
       } else {

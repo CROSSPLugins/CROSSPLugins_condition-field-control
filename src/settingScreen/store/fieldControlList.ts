@@ -2,30 +2,35 @@ import { atom } from 'recoil';
 import { FieldControl, FieldControlConfig } from '../../type';
 import { v4 as uuidv4 } from 'uuid';
 
-type CustomFieldControl = 
-  Pick<FieldControl, 'targetField' | 'controlType'> &
-  { id: string } &
-  { 
-    config: 
-      (
-        FieldControlConfig & 
-        { id: string }
-      )[]
-  }
-;
+type FieldAdditionInfo = {
+  fieldError: boolean
+  errorText: string
+};
+
+export type CustomFieldControl = {
+  id: string
+  targetField: { value: FieldControl['targetField'] } & FieldAdditionInfo
+  controlType: { value: FieldControl['controlType'] } & FieldAdditionInfo
+  config: {
+    id: string
+    field: { value: FieldControlConfig['field'] } & FieldAdditionInfo
+    op: { value: FieldControlConfig['op'] } & FieldAdditionInfo
+    value: { value: FieldControlConfig['value'] } & FieldAdditionInfo
+  }[]
+};
 
 const fieldControlList = atom<CustomFieldControl[]>({
   key: 'fieldControlList',
   default: [
     {
-      targetField: null,
-      controlType: 'required',
       id: uuidv4(),
+      targetField: { value: null, fieldError: false, errorText: '' },
+      controlType: { value: 'required', fieldError: false, errorText: '' },
       config: [
         {
-          field: 'aaa',
-          op: null,
-          value: null,
+          field: { value: null, fieldError: false, errorText: '' },
+          op: { value: null, fieldError: false, errorText: '' },
+          value: { value: null, fieldError: false, errorText: '' },
           id: uuidv4()
         }
       ]

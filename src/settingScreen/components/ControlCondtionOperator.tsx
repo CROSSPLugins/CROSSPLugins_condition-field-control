@@ -49,11 +49,11 @@ export default () => {
   return (
     <>
       <KintoneDropDown 
-        value={list[listIndex].config[configIndex].op ?? ''}
+        value={list[listIndex].config[configIndex].op.value ?? ''}
         options={switchingOperator(fieldType)}
         onChange={(value) => {
           const _list = deepcp(list);
-          _list[listIndex].config[configIndex].op = value === '' ? null : value as string;
+          _list[listIndex].config[configIndex].op.value = value === '' ? null : value as string;
           setList(_list);
         }}
         disabled={fieldType === null}
