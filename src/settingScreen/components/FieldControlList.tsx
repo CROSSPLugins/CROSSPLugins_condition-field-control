@@ -172,11 +172,12 @@ export default () => {
                       listIndex={listIndex}
                       configIndex={configIndex}
                       formFieldsInfo={formFieldsInfo}
+                      isFirst={true}
                     />
                     <td className="kintoneplugin-table-td-operation">
                       <button
                         type="button"
-                        onClick={() => { addConfig(listIndex, configIndex) }}
+                        onClick={() => { list[listIndex].config[configIndex].field !== null && addConfig(listIndex, configIndex) }}
                         className="kintoneplugin-button-add-row-image"
                         title="条件を追加する"
                       />
@@ -196,6 +197,7 @@ export default () => {
                       listIndex={listIndex}
                       configIndex={configIndex}
                       formFieldsInfo={formFieldsInfo}
+                      isFirst={false}
                     />
                     <td className="kintoneplugin-table-td-operation">
                       <button

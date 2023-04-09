@@ -13,12 +13,14 @@ export const ControlConditionContext = createContext({} as {
   formFieldsInfo: FormFieldsInfo[]
   fieldType: string | null
   setFieldType: React.Dispatch<React.SetStateAction<string | null>>
+  isFirst: boolean
 });
 
 export default (props: {
   listIndex: number
   configIndex: number
   formFieldsInfo: FormFieldsInfo[]
+  isFirst: boolean
 }) => {
   const list = useRecoilValue(fieldControlList);
   const [fieldError, setFieldError] = useState(false);
@@ -44,7 +46,8 @@ export default (props: {
         configIndex: props.configIndex,
         formFieldsInfo: props.formFieldsInfo,
         fieldType,
-        setFieldType
+        setFieldType,
+        isFirst: props.isFirst
       }}>
       <td>
         <ControlConditionField error={fieldError} />

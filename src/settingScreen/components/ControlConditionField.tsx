@@ -36,6 +36,8 @@ const filteringFormFields = (formFieldsInfo: FormFieldsInfo[]) => {
   });
 };
 
+const setNoConditionOption = (_: boolean) => _ ? [{ value: '', text: '条件なし' }] : [];
+
 type Props = {
   error: boolean
 };
@@ -46,7 +48,8 @@ export default (props: Props) => {
     listIndex,
     configIndex,
     formFieldsInfo,
-    setFieldType
+    setFieldType,
+    isFirst
   } = useContext(ControlConditionContext);
 
   return (
@@ -54,7 +57,7 @@ export default (props: Props) => {
       <KintoneDropDown 
         value={list[listIndex].config[configIndex].field ?? ''}
         options={[
-          { value: '', text: '条件なし' },
+          ...setNoConditionOption(isFirst),
           ...filteringFormFields(formFieldsInfo).map(e => ({ value: e.code, text: e.label }))
         ]}
         onChange={value => {
