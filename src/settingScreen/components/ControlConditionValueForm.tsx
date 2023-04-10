@@ -8,6 +8,7 @@ import KintoneCheckBox from "./kintoneForm/KintoneCheckBox";
 import CustomDateForm from "./customForm/CustomDateForm";
 import CustomTimeForm from "./customForm/CustomTimeForm";
 import CustomDateTimeForm from "./customForm/CustomDateTimeForm";
+import FormErrorLabel from "./FormErrorLabel";
 
 const isArray = (arg: string | number | (string | number)[] | null): arg is (string | number)[] => {
   return Array.isArray(arg);
@@ -27,6 +28,11 @@ export default () => {
 
   const render = useCallback(() => {
     const configValue = list[listIndex].config[configIndex].value.value;
+    const errorlabel = (
+      <FormErrorLabel error={list[listIndex].config[configIndex].value.fieldError}>
+        {list[listIndex].config[configIndex].value.errorText}
+      </FormErrorLabel>
+    );
     switch(fieldType) {
       case 'SINGLE_LINE_TEXT':
       case 'LINK':
@@ -37,14 +43,17 @@ export default () => {
       case 'RECORD_NUMBER':
         if(!isArray(configValue)) {
           return (
-            <KintoneText
-              value={configValue ?? ''}
-              onChange={value => {
-                const _list = deepcp(list);
-                _list[listIndex].config[configIndex].value.value = value;
-                setList(_list);
-              }}
-            />
+            <>
+              <KintoneText
+                value={configValue ?? ''}
+                onChange={value => {
+                  const _list = deepcp(list);
+                  _list[listIndex].config[configIndex].value.value = value;
+                  setList(_list);
+                }}
+              />
+              {errorlabel}
+            </>
           );
         } else {
           throw new Error('予期せぬエラーが発生しました。');
@@ -55,25 +64,28 @@ export default () => {
       case 'MULTI_SELECT':
         if(isArray(configValue)) {
           return (
-            <KintoneCheckBox
-              options={
-                Object.values(
-                  formFieldsInfo
-                    .filter(e => e.code === list[listIndex].config[configIndex].field.value)[0].options)
-                    .map(e => {
-                      if(configValue.some(f => f === e.label)) {
-                        return { value: e.label, checked: false };
-                      } else {
-                        return { value: e.label, checked: false };
-                      }
-                    })
-                }
-              onChange={value => {
-                const _list = deepcp(list);
-                _list[listIndex].config[configIndex].value.value = value;
-                setList(_list);
-              }}
-            />
+            <>
+              <KintoneCheckBox
+                options={
+                  Object.values(
+                    formFieldsInfo
+                      .filter(e => e.code === list[listIndex].config[configIndex].field.value)[0].options)
+                      .map(e => {
+                        if(configValue.some(f => f === e.label)) {
+                          return { value: e.label, checked: false };
+                        } else {
+                          return { value: e.label, checked: false };
+                        }
+                      })
+                  }
+                onChange={value => {
+                  const _list = deepcp(list);
+                  _list[listIndex].config[configIndex].value.value = value;
+                  setList(_list);
+                }}
+              />
+              {errorlabel}
+            </>
           );
         } else {
           throw new Error('予期せぬエラーが発生しました。');
@@ -81,14 +93,17 @@ export default () => {
       case 'DATE':
         if(isString(configValue)) {
           return (
-            <CustomDateForm 
-              value={configValue}
-              onChange={value => {
-                const _list = deepcp(list);
-                _list[listIndex].config[configIndex].value.value = value;
-                setList(_list);
-              }}
-            />
+            <>
+              <CustomDateForm 
+                value={configValue}
+                onChange={value => {
+                  const _list = deepcp(list);
+                  _list[listIndex].config[configIndex].value.value = value;
+                  setList(_list);
+                }}
+              />
+              {errorlabel}
+            </>
           );
         } else {
           throw new Error('予期せぬエラーが発生しました。');
@@ -96,14 +111,18 @@ export default () => {
       case 'TIME':
         if(isString(configValue)) {
           return (
-            <CustomTimeForm 
-              value={configValue}
-              onChange={value => {
-                const _list = deepcp(list);
-                _list[listIndex].config[configIndex].value.value = value;
-                setList(_list);
-              }}
-            />
+            <>
+              <CustomTimeForm 
+                value={configValue}
+                onChange={value => {
+                  const _list = deepcp(list);
+                  _list[listIndex].config[configIndex].value.value = value;
+                  setList(_list);
+                }}
+              />
+              {errorlabel}
+            </>
+            
           );
         } else {
           throw new Error('予期せぬエラーが発生しました。');
@@ -113,14 +132,17 @@ export default () => {
       case 'UPDATED_TIME':
         if(isString(configValue)) {
           return (
-            <CustomDateTimeForm
-              value={configValue}
-              onChange={value => {
-                const _list = deepcp(list);
-                _list[listIndex].config[configIndex].value.value = value;
-                setList(_list);
-              }}
-            />
+            <>
+              <CustomDateTimeForm
+                value={configValue}
+                onChange={value => {
+                  const _list = deepcp(list);
+                  _list[listIndex].config[configIndex].value.value = value;
+                  setList(_list);
+                }}
+              />
+              {errorlabel}
+            </>
           );
         } else {
           throw new Error('予期せぬエラーが発生しました。');

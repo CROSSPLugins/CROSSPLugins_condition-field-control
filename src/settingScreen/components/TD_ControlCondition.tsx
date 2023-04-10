@@ -1,11 +1,12 @@
 import React from 'react';
 import { useState, createContext } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { fieldControlList } from '../store';
 import { FormFieldsInfo } from '../../type';
 import ControlConditionField from './ControlConditionField';
 import ControlCondtionOperator from './ControlCondtionOperator';
 import ControlConditionValueForm from './ControlConditionValueForm';
+import { deepcp } from '../utils';
 
 export const ControlConditionContext = createContext({} as {
   listIndex: number
@@ -22,8 +23,7 @@ export default (props: {
   formFieldsInfo: FormFieldsInfo[]
   isFirst: boolean
 }) => {
-  const list = useRecoilValue(fieldControlList);
-  const [fieldError, setFieldError] = useState(false);
+  const [list, setList] = useRecoilState(fieldControlList);
   const [fieldType, setFieldType] = useState(() => {
     if(list[props.listIndex].config[props.configIndex].field.value) {
       const result = props.formFieldsInfo.filter(e => e.code === list[props.listIndex].config[props.configIndex].field.value);
@@ -31,7 +31,10 @@ export default (props: {
         return result[0].type;
       } else {
         // 「制限対象フィールド」に設定していたフィールド情報がない
-        setFieldError(true);
+        const _list = deepcp(list);
+        _list[props.listIndex].config[props.configIndex].field.fieldError = true;
+        _list[props.listIndex].config[props.configIndex].field.errorText = '再設定してください';
+        setList(_list);
         return null;
       }
     } else {
@@ -50,7 +53,7 @@ export default (props: {
         isFirst: props.isFirst
       }}>
       <td>
-        <ControlConditionField error={fieldError} />
+        <ControlConditionField />
       </td>
       <td>
         <ControlCondtionOperator />

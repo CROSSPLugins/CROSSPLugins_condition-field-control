@@ -4,6 +4,7 @@ import { fieldControlList } from "../store";
 import { ControlConditionContext } from "./TD_ControlCondition";
 import KintoneDropDown from "./kintoneForm/KintoneDropDown";
 import { deepcp } from "../utils";
+import FormErrorLabel from "./FormErrorLabel";
 
 /**
  * 「制御の条件設定」のフィールドタイプに応じて選択肢を切り替える
@@ -58,6 +59,9 @@ export default () => {
         }}
         disabled={fieldType === null}
       />
+      <FormErrorLabel error={list[listIndex].config[configIndex].op.fieldError}>
+        {list[listIndex].config[configIndex].op.errorText}
+      </FormErrorLabel>
     </>
   );
 };

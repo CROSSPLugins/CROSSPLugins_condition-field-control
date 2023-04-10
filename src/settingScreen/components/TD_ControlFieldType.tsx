@@ -3,6 +3,7 @@ import { ControlType, FormFieldsInfo } from '../../type';
 import { deepcp } from '../utils';
 import { fieldControlList, CustomFieldControl } from '../store';
 import KintoneDropDown from './kintoneForm/KintoneDropDown';
+import FormErrorLabel from './FormErrorLabel';
 
 const filteringFormFields = (formFieldsInfo: FormFieldsInfo[], list: CustomFieldControl[], listIndex: number) => {
   return formFieldsInfo.filter(e => {
@@ -85,6 +86,9 @@ export default (props: {
           }}
           unselectValue
         />
+        <FormErrorLabel error={list[props.listIndex].targetField.fieldError}>
+          {list[props.listIndex].targetField.errorText}
+        </FormErrorLabel>
       </td>
       <td rowSpan={props.rowSpan}>
         <KintoneDropDown 
@@ -96,6 +100,9 @@ export default (props: {
             setList(_list);
           }}
         />
+        <FormErrorLabel error={list[props.listIndex].controlType.fieldError}>
+          {list[props.listIndex].controlType.errorText}
+        </FormErrorLabel>
       </td>
     </>
   );

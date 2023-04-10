@@ -38,11 +38,7 @@ const filteringFormFields = (formFieldsInfo: FormFieldsInfo[]) => {
 
 const setNoConditionOption = (_: boolean) => _ ? [{ value: '', text: '条件なし' }] : [];
 
-type Props = {
-  error: boolean
-};
-
-export default (props: Props) => {
+export default () => {
   const [list, setList] = useRecoilState(fieldControlList);
   const { 
     listIndex,
@@ -96,8 +92,8 @@ export default (props: Props) => {
           setList(_list);
         }}
       />
-      <FormErrorLabel error={props.error}>
-        再設定してください
+      <FormErrorLabel error={list[listIndex].config[configIndex].field.fieldError}>
+        {list[listIndex].config[configIndex].field.errorText}
       </FormErrorLabel>
     </>
   );

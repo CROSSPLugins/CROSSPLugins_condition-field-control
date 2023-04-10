@@ -46,8 +46,16 @@ export default (props: { show: boolean }) => {
       // config
       return {
         ...e,
-        config: e.config.map(f => {
-          // field 特になし
+        config: e.config.map((f, y) => {
+          // field
+          if(y > 0) {
+            // 2つ目以降のconfigのfield.valueがnullの場合
+            if(f.field.value === null) {
+              isCorrect = false;
+              f.field.fieldError = true;
+              f.field.errorText = '設定してください';
+            }
+          }
           // op
           if(f.field.value !== null && f.op.value === null) {
             isCorrect = false;
