@@ -39,8 +39,6 @@ export default (props: { show: boolean }) => {
         isCorrect = false;
         e.targetField.fieldError = true;
         e.targetField.errorText = '設定してください';
-      } else {
-        e.targetField.fieldError = false;
       }
       // controlType 特になし
       // config
@@ -61,16 +59,12 @@ export default (props: { show: boolean }) => {
             isCorrect = false;
             f.op.fieldError = true;
             f.op.errorText = '設定してください';
-          } else {
-            f.op.fieldError = false;
           }
           /* value */
           if(f.field.value !== null && f.value.value === null) {
             isCorrect = false;
             f.value.fieldError = true;
             f.value.errorText = '設定してください';
-          } else {
-            f.value.fieldError = false;
           }
           return f;
         })
@@ -78,6 +72,20 @@ export default (props: { show: boolean }) => {
     });
 
     if(!isCorrect) {
+      setList(_list);
+    } else {
+      // フィールドエラーを解除する
+      const _list = deepcp(list).map(e => {
+        e.targetField.fieldError = false;
+        e.controlType.fieldError = false;
+        e.config = e.config.map(f => {
+          f.field.fieldError = false;
+          f.op.fieldError = false;
+          f.value.fieldError = false;
+          return f
+        });
+        return e;
+      });
       setList(_list);
     }
     
