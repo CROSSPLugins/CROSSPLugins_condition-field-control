@@ -64,6 +64,7 @@ export default (props: { show: boolean }) => {
           } else {
             f.op.fieldError = false;
           }
+          // value
           if(f.field.value !== null && f.value.value === null) {
             isCorrect = false;
             f.value.fieldError = true;

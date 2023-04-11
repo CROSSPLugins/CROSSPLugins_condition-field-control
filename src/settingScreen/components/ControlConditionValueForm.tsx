@@ -144,9 +144,11 @@ export default () => {
               <CustomDateTimeForm
                 value={configValue}
                 onChange={value => {
-                  const _list = deepcp(list);
-                  _list[listIndex].config[configIndex].value.value = value;
-                  setList(_list);
+                  setList((_old_list) => {
+                    const _list = deepcp(_old_list);
+                    _list[listIndex].config[configIndex].value.value = value;
+                    return _list;
+                  });
                 }}
               />
               {errorlabel}
