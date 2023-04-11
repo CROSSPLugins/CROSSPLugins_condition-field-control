@@ -47,7 +47,7 @@ export default (props: { show: boolean }) => {
       return {
         ...e,
         config: e.config.map((f, y) => {
-          // field
+          /* field */
           if(y > 0) {
             // 2つ目以降のconfigのfield.valueがnullの場合
             if(f.field.value === null) {
@@ -55,8 +55,8 @@ export default (props: { show: boolean }) => {
               f.field.fieldError = true;
               f.field.errorText = '設定してください';
             }
-          }
-          // op
+          }          
+          /* op */
           if(f.field.value !== null && f.op.value === null) {
             isCorrect = false;
             f.op.fieldError = true;
@@ -64,7 +64,7 @@ export default (props: { show: boolean }) => {
           } else {
             f.op.fieldError = false;
           }
-          // value
+          /* value */
           if(f.field.value !== null && f.value.value === null) {
             isCorrect = false;
             f.value.fieldError = true;
@@ -103,7 +103,9 @@ export default (props: { show: boolean }) => {
       }
     };
     kintone.plugin.app.setConfig(
-      pluginSetting,
+      {
+        config: JSON.stringify(pluginSetting)
+      },
       () => {
         console.log('設定完了');
       }

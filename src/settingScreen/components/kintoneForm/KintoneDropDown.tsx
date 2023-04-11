@@ -132,6 +132,11 @@ export default (props: Props) => {
     );
   }, [props.options]);
 
+  // props.value の値が変化した時のハンドラ
+  useSkipEffect(() => {
+    setSelectValue(props.value);
+  }, [props.value]);
+
   return (
     <div className="kintoneplugin-dropdown-outer" css={[style.outer, props.overcss, style.disable(props.disabled)]}>
       <div className="kintoneplugin-dropdown" css={style.selected} ref={insideRef}>

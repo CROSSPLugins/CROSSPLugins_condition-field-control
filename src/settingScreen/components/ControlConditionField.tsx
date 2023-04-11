@@ -89,6 +89,8 @@ export default () => {
           }
           // value === '' の場合は、nullを挿入する
           _list[listIndex].config[configIndex].field.value = value === '' ? null : value as string;
+          // 制御の条件設定フィールドの選択が変わったら、オペレーターの選択をリセットする
+          _list[listIndex].config[configIndex].op.value = null;
           setList(_list);
         }}
       />

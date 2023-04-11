@@ -1,12 +1,13 @@
 import { css } from "@emotion/react";
 import { globalStyle } from "../style";
-import { useState, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { KintoneRestAPIClient } from '@kintone/rest-api-client';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 import TD_ControlFieldType from './TD_ControlFieldType';
 import TD_ControlCondition from "./TD_ControlCondition";
-import { fieldControlList } from '../store';
+import {
+  fieldControlList,
+  formFieldsInfo as _formFieldsInfo
+} from '../store';
 import { deepcp } from "../utils";
 
 const tableBorderColor = '#d8d8d8';
@@ -77,7 +78,7 @@ export default () => {
   // フィールド制御一覧
   const [list, setList] = useRecoilState(fieldControlList);
   // アプリフォーム情報
-  const [formFieldsInfo, setFormFieldsInfo] = useState<any[]>([]);
+  const formFieldsInfo = useRecoilValue(_formFieldsInfo);
 
   const addConfig = (listIndex: number, configIndex: number) => {
     const _list = deepcp(list);
@@ -137,20 +138,6 @@ export default () => {
     _list.splice(listIndex, 1);
     setList(_list);
   };
-
-  useEffect(()=>{
-    // フォーム情報を取得する
-    (async()=>{
-      try {
-        const client = new KintoneRestAPIClient();
-        const resp = await client.app.getFormFields({ app: kintone.app.getId() as number });
-        setFormFieldsInfo(Object.values(resp.properties));
-        console.log(Object.values(resp.properties));
-      } catch (e) {
-        console.error(e);
-      }
-    })()
-  }, []);
 
   return (
     <div id='crossplugins-cfc_field-control-list'>
