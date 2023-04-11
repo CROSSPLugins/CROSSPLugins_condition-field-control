@@ -45,11 +45,13 @@ export default () => {
           return (
             <>
               <KintoneText
-                value={configValue ?? ''}
+                value={''}
                 onChange={value => {
-                  const _list = deepcp(list);
-                  _list[listIndex].config[configIndex].value.value = value;
-                  setList(_list);
+                  setList((_old_list) => {
+                    const _list = deepcp(_old_list);
+                    _list[listIndex].config[configIndex].value.value = value;
+                    return _list;
+                  });
                 }}
               />
               {errorlabel}
@@ -79,9 +81,11 @@ export default () => {
                       })
                   }
                 onChange={value => {
-                  const _list = deepcp(list);
-                  _list[listIndex].config[configIndex].value.value = value;
-                  setList(_list);
+                  setList((_old_list) => {
+                    const _list = deepcp(_old_list);
+                    _list[listIndex].config[configIndex].value.value = value;
+                    return _list;
+                  });
                 }}
               />
               {errorlabel}
@@ -97,9 +101,11 @@ export default () => {
               <CustomDateForm 
                 value={configValue}
                 onChange={value => {
-                  const _list = deepcp(list);
-                  _list[listIndex].config[configIndex].value.value = value;
-                  setList(_list);
+                  setList((_old_list) => {
+                    const _list = deepcp(_old_list);
+                    _list[listIndex].config[configIndex].value.value = value;
+                    return _list;
+                  });
                 }}
               />
               {errorlabel}
@@ -115,9 +121,11 @@ export default () => {
               <CustomTimeForm 
                 value={configValue}
                 onChange={value => {
-                  const _list = deepcp(list);
-                  _list[listIndex].config[configIndex].value.value = value;
-                  setList(_list);
+                  setList((_old_list) => {
+                    const _list = deepcp(_old_list);
+                    _list[listIndex].config[configIndex].value.value = value;
+                    return _list;
+                  });
                 }}
               />
               {errorlabel}
