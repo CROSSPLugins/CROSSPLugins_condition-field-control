@@ -16,6 +16,9 @@ const isArray = (arg: string | number | (string | number)[] | null): arg is (str
 const isString = (arg: string | number | (string | number)[] | null): arg is string => {
   return typeof arg === 'string';
 };
+const isNumber = (arg: string | number | (string | number)[] | null): arg is number => {
+  return typeof arg === 'number';
+};
 
 export default () => {
   const [list, setList] = useRecoilState(fieldControlList);
@@ -41,11 +44,11 @@ export default () => {
       case 'MULTI_LINE_TEXT':
       case 'CATEGORY':
       case 'RECORD_NUMBER':
-        if(!isArray(configValue)) {
+        if(isString(configValue) || isNumber(configValue)) {
           return (
             <>
               <KintoneText
-                value={''}
+                value={configValue}
                 onChange={value => {
                   setList((_old_list) => {
                     const _list = deepcp(_old_list);
