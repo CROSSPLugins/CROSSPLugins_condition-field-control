@@ -14,13 +14,13 @@
     "required_params": ["licensekey"]
   },
   "name": {
-    "ja": "CROSSPLugins テンプレート",
-    "en": "CROSSPLugins テンプレート",
-    "zh": "CROSSPLugins テンプレート"
+    "ja": "CROSSPLugins 条件フィールド制御",
+    "en": "CROSSPLugins 条件フィールド制御",
+    "zh": "CROSSPLugins 条件フィールド制御"
   },
   "description": {
-    "ja": "これはテンプレートです。",
-    "en": "これはテンプレートです。",
-    "zh": "これはテンプレートです。"
+    "ja": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。",
+    "en": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。",
+    "zh": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。"
   }
 }
