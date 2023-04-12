@@ -124,7 +124,10 @@ export default (props: { show: boolean }) => {
     <div css={[style.container, style.toggle(props.show)]}>
       <FieldControlList />
       <div css={style.buttons}>
-        <button className='kintoneplugin-button-normal'>キャンセル</button>
+        <button 
+          className='kintoneplugin-button-normal'
+          onClick={() => { history.back() }}
+        >キャンセル</button>
         <button className='kintoneplugin-button-dialog-ok' onClick={savePluginSettings}>
           保存
         </button>
