@@ -17,8 +17,7 @@ export default (props: Props) => {
   useEffect(() => {
     (async () => {
       const charconfig = kintone.plugin.app.getConfig(props.pluginId).config;
-      if(!charconfig) return;
-      
+
       let _formFieldsInfo: FormFieldsInfo[];
       try {
         const client = new KintoneRestAPIClient();
@@ -30,6 +29,9 @@ export default (props: Props) => {
         console.error(e);
         return;
       }
+
+      // charconfig が undefined の時は設定情報反映処理は実行しない
+      if(!charconfig) return;
 
       const config: PluginSetting = JSON.parse(charconfig);
       // カスタマイズ設定がある時の処理
