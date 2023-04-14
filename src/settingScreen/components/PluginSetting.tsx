@@ -100,7 +100,7 @@ export default (props: { show: boolean }) => {
       systemSetting: { _: {} },
       customizeSetting: {
         fieldControlList: list.map(e => ({
-          targetField: e.targetField.value,
+          targetField: e.targetField.value as string,
           controlType: e.controlType.value,
           config: e.config.map(f => ({
             field: f.field.value,

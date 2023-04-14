@@ -14,7 +14,7 @@ export type FieldControlConfig = {
 
 export type FieldControl = {
   // 制御対象フィールドコード
-  targetField: string | null
+  targetField: string
   // 制御の種類
   controlType: ControlType
   // 制御の条件設定一覧

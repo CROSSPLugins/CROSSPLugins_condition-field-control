@@ -9,7 +9,7 @@ type FieldAdditionInfo = {
 
 export type CustomFieldControl = {
   id: string
-  targetField: { value: FieldControl['targetField'] } & FieldAdditionInfo
+  targetField: { value: FieldControl['targetField'] | null } & FieldAdditionInfo
   controlType: { value: FieldControl['controlType'] } & FieldAdditionInfo
   config: {
     id: string
