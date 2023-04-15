@@ -80,9 +80,7 @@ export default (props: Props) => {
         options={
           [
             { text: '時間指定する', value: specify },
-            { text: '今日', value: 'today' },
-            { text: '昨日', value: 'yesterday' },
-            { text: '明日', value: 'tomorrow' }
+            { text: '今', value: 'now' }
           ]
         }
         overcss={style.dropdown(isStretchDropDown)}

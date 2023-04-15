@@ -78,24 +78,33 @@ export default (props: { show: boolean }) => {
                 tField[0].type === 'CREATED_TIME' || 
                 tField[0].type === 'UPDATED_TIME'
               ) {
-                // YYYY-MM-DDTHH:mm:ss の形式であるかチェック
-                if (!/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d/.test(f.value.value as string)) {
+                // YYYY-MM-DDTHH:mm:ss の形式 または today yesterday tomorrow now であるかチェック
+                if (
+                  !/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d/.test(f.value.value as string) &&
+                  !/(today)|(yesterday)|(tomorrow)|(now)/.test(f.value.value as string)
+                ) {
                   isCorrect = false;
                   f.value.fieldError = true;
                   f.value.errorText = '値が不正です';
                 } else { f.value.fieldError = false; }
               }
               else if (tField[0].type === 'DATE') {
-                // YYYY-MM-DD の形式であるかチェック
-                if(!/\d\d\d\d-\d\d-\d\d/.test(f.value.value as string)) {
+                // YYYY-MM-DD の形式 または today yesterday tomorrow であるかチェック
+                if(
+                  !/\d\d\d\d-\d\d-\d\d/.test(f.value.value as string) &&
+                  !/(today)|(yesterday)|(tomorrow)/.test(f.value.value as string)
+                ) {
                   isCorrect = false;
                   f.value.fieldError = true;
                   f.value.errorText = '値が不正です';
                 } else { f.value.fieldError = false; }
               }
               else if (tField[0].type === 'TIME') {
-                // HH:mm の形式であるかチェック
-                if(!/\d\d:\d\d/.test(f.value.value as string)) {
+                // HH:mm の形式 または now であるかチェック
+                if(
+                  !/\d\d:\d\d/.test(f.value.value as string) &&
+                  !/(now)/.test(f.value.value as string)
+                ) {
                   isCorrect = false;
                   f.value.fieldError = true;
                   f.value.errorText = '値が不正です';
