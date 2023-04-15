@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import FieldControlList from './FieldControlList';
-import { fieldControlList } from '../store';
+import { fieldControlList, formFieldsInfo as _formFieldsInfo } from '../store';
 import { PluginSetting } from '../../type';
 import { deepcp } from '../utils';
 
@@ -28,6 +28,7 @@ const style = {
 
 export default (props: { show: boolean }) => {
   const [list, setList] = useRecoilState(fieldControlList);
+  const formFieldsInfo = useRecoilValue(_formFieldsInfo);
 
   const checkSetting = (): boolean => {
     let isCorrect = true;
@@ -39,6 +40,8 @@ export default (props: { show: boolean }) => {
         isCorrect = false;
         e.targetField.fieldError = true;
         e.targetField.errorText = '設定してください';
+      } else {
+        e.targetField.fieldError = false;
       }
       // controlType 特になし
       // config
@@ -46,48 +49,76 @@ export default (props: { show: boolean }) => {
         ...e,
         config: e.config.map((f, y) => {
           /* field */
-          if(y > 0) {
+          if(f.field.value === null) {
             // 2つ目以降のconfigのfield.valueがnullの場合
-            if(f.field.value === null) {
+            if(y > 0) {
               isCorrect = false;
               f.field.fieldError = true;
               f.field.errorText = '設定してください';
             }
-          }          
-          /* op */
-          if(f.field.value !== null && f.op.value === null) {
-            isCorrect = false;
-            f.op.fieldError = true;
-            f.op.errorText = '設定してください';
-          }
-          /* value */
-          if(f.field.value !== null && f.value.value === null) {
-            isCorrect = false;
-            f.value.fieldError = true;
-            f.value.errorText = '設定してください';
+          } else {
+            if(y > 0) {
+              f.field.fieldError = false;
+            }
+            /* op */
+            if(f.op.value === null) {
+              isCorrect = false;
+              f.op.fieldError = true;
+              f.op.errorText = '設定してください';
+            } else { f.op.fieldError = false; }
+            /* value */
+            if(f.value.value === null) {
+              isCorrect = false;
+              f.value.fieldError = true;
+              f.value.errorText = '設定してください';
+            } else {
+              const tField = formFieldsInfo.filter(g => g.code === f.field.value);
+              if (
+                tField[0].type === 'DATETIME' || 
+                tField[0].type === 'CREATED_TIME' || 
+                tField[0].type === 'UPDATED_TIME'
+              ) {
+                // YYYY-MM-DDTHH:mm:ss の形式であるかチェック
+                if (!/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d/.test(f.value.value as string)) {
+                  isCorrect = false;
+                  f.value.fieldError = true;
+                  f.value.errorText = '値が不正です';
+                } else { f.value.fieldError = false; }
+              }
+              else if (tField[0].type === 'DATE') {
+                // YYYY-MM-DD の形式であるかチェック
+                if(!/\d\d\d\d-\d\d-\d\d/.test(f.value.value as string)) {
+                  isCorrect = false;
+                  f.value.fieldError = true;
+                  f.value.errorText = '値が不正です';
+                } else { f.value.fieldError = false; }
+              }
+              else if (tField[0].type === 'TIME') {
+                // HH:mm の形式であるかチェック
+                if(!/\d\d:\d\d/.test(f.value.value as string)) {
+                  isCorrect = false;
+                  f.value.fieldError = true;
+                  f.value.errorText = '値が不正です';
+                } else { f.value.fieldError = false; }
+              }
+              else if (tField[0].type === 'RECORD_NUMBER') {
+                if(!(f.value.value as string)) {
+                  isCorrect = false;
+                  f.value.fieldError = true;
+                  f.value.errorText = '値を入力してください';
+                } else { f.value.fieldError = false; }
+              }
+              else {
+                f.value.fieldError = false;
+              }
+            }
           }
           return f;
         })
       };
     });
 
-    if(!isCorrect) {
-      setList(_list);
-    } else {
-      // フィールドエラーを解除する
-      const _list = deepcp(list).map(e => {
-        e.targetField.fieldError = false;
-        e.controlType.fieldError = false;
-        e.config = e.config.map(f => {
-          f.field.fieldError = false;
-          f.op.fieldError = false;
-          f.value.fieldError = false;
-          return f
-        });
-        return e;
-      });
-      setList(_list);
-    }
+    setList(_list);
     
     return isCorrect;
   };

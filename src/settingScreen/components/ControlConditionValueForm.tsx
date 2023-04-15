@@ -31,11 +31,6 @@ export default () => {
 
   const render = useCallback(() => {
     const configValue = list[listIndex].config[configIndex].value.value;
-    const errorlabel = (
-      <FormErrorLabel error={list[listIndex].config[configIndex].value.fieldError}>
-        {list[listIndex].config[configIndex].value.errorText}
-      </FormErrorLabel>
-    );
     switch(fieldType) {
       case 'SINGLE_LINE_TEXT':
       case 'LINK':
@@ -46,19 +41,16 @@ export default () => {
       case 'RECORD_NUMBER':
         if(isString(configValue) || isNumber(configValue)) {
           return (
-            <>
-              <KintoneText
-                value={configValue}
-                onChange={value => {
-                  setList((_old_list) => {
-                    const _list = deepcp(_old_list);
-                    _list[listIndex].config[configIndex].value.value = value;
-                    return _list;
-                  });
-                }}
-              />
-              {errorlabel}
-            </>
+            <KintoneText
+              value={configValue}
+              onChange={value => {
+                setList((_old_list) => {
+                  const _list = deepcp(_old_list);
+                  _list[listIndex].config[configIndex].value.value = value;
+                  return _list;
+                });
+              }}
+            />
           );
         } else {
           throw new Error('予期せぬエラーが発生しました。');
@@ -69,30 +61,27 @@ export default () => {
       case 'MULTI_SELECT':
         if(isArray(configValue)) {
           return (
-            <>
-              <KintoneCheckBox
-                options={
-                  Object.values(
-                    formFieldsInfo
-                      .filter(e => e.code === list[listIndex].config[configIndex].field.value)[0].options)
-                      .map(e => {
-                        if(configValue.some(f => f === e.label)) {
-                          return { value: e.label, checked: false };
-                        } else {
-                          return { value: e.label, checked: false };
-                        }
-                      })
-                  }
-                onChange={value => {
-                  setList((_old_list) => {
-                    const _list = deepcp(_old_list);
-                    _list[listIndex].config[configIndex].value.value = value;
-                    return _list;
-                  });
-                }}
-              />
-              {errorlabel}
-            </>
+            <KintoneCheckBox
+              options={
+                Object.values(
+                  formFieldsInfo
+                    .filter(e => e.code === list[listIndex].config[configIndex].field.value)[0].options)
+                    .map(e => {
+                      if(configValue.some(f => f === e.label)) {
+                        return { value: e.label, checked: false };
+                      } else {
+                        return { value: e.label, checked: false };
+                      }
+                    })
+                }
+              onChange={value => {
+                setList((_old_list) => {
+                  const _list = deepcp(_old_list);
+                  _list[listIndex].config[configIndex].value.value = value;
+                  return _list;
+                });
+              }}
+            />
           );
         } else {
           throw new Error('予期せぬエラーが発生しました。');
@@ -100,19 +89,16 @@ export default () => {
       case 'DATE':
         if(isString(configValue)) {
           return (
-            <>
-              <CustomDateForm 
-                value={configValue}
-                onChange={value => {
-                  setList((_old_list) => {
-                    const _list = deepcp(_old_list);
-                    _list[listIndex].config[configIndex].value.value = value;
-                    return _list;
-                  });
-                }}
-              />
-              {errorlabel}
-            </>
+            <CustomDateForm 
+              value={configValue}
+              onChange={value => {
+                setList((_old_list) => {
+                  const _list = deepcp(_old_list);
+                  _list[listIndex].config[configIndex].value.value = value;
+                  return _list;
+                });
+              }}
+            />
           );
         } else {
           throw new Error('予期せぬエラーが発生しました。');
@@ -120,20 +106,16 @@ export default () => {
       case 'TIME':
         if(isString(configValue)) {
           return (
-            <>
-              <CustomTimeForm 
-                value={configValue}
-                onChange={value => {
-                  setList((_old_list) => {
-                    const _list = deepcp(_old_list);
-                    _list[listIndex].config[configIndex].value.value = value;
-                    return _list;
-                  });
-                }}
-              />
-              {errorlabel}
-            </>
-            
+            <CustomTimeForm 
+              value={configValue}
+              onChange={value => {
+                setList((_old_list) => {
+                  const _list = deepcp(_old_list);
+                  _list[listIndex].config[configIndex].value.value = value;
+                  return _list;
+                });
+              }}
+            />
           );
         } else {
           throw new Error('予期せぬエラーが発生しました。');
@@ -143,19 +125,16 @@ export default () => {
       case 'UPDATED_TIME':
         if(isString(configValue)) {
           return (
-            <>
-              <CustomDateTimeForm
-                value={configValue}
-                onChange={value => {
-                  setList((_old_list) => {
-                    const _list = deepcp(_old_list);
-                    _list[listIndex].config[configIndex].value.value = value;
-                    return _list;
-                  });
-                }}
-              />
-              {errorlabel}
-            </>
+            <CustomDateTimeForm
+              value={configValue}
+              onChange={value => {
+                setList((_old_list) => {
+                  const _list = deepcp(_old_list);
+                  _list[listIndex].config[configIndex].value.value = value;
+                  return _list;
+                });
+              }}
+            />
           );
         } else {
           throw new Error('予期せぬエラーが発生しました。');
@@ -174,6 +153,9 @@ export default () => {
       {
         render()
       }
+      <FormErrorLabel error={list[listIndex].config[configIndex].value.fieldError}>
+        {list[listIndex].config[configIndex].value.errorText}
+      </FormErrorLabel>
     </>
   )
 };
