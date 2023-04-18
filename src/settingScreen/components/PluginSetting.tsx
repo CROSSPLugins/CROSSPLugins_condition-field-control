@@ -153,9 +153,6 @@ export default (props: { show: boolean }) => {
     kintone.plugin.app.setConfig(
       {
         config: JSON.stringify(pluginSetting)
-      },
-      () => {
-        console.log('設定完了');
       }
     );
   };
