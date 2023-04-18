@@ -1,10 +1,24 @@
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
-import { KintoneRestAPIClient } from '@kintone/rest-api-client';
+import { KintoneRestAPIClient, KintoneRestAPIError } from '@kintone/rest-api-client';
 import { FormFieldsInfo, PluginSetting } from '../type';
 import PageRoot from './components/PageRoot';
 import { fieldControlList, formFieldsInfo } from './store';
+import toastr from 'toastr';
+
+toastr.options = {
+  closeButton: false,
+  debug: false,
+  newestOnTop: false,
+  progressBar: false,
+  positionClass: 'toast-top-center',
+  preventDuplicates: false,
+  showEasing: 'swing',
+  hideEasing: 'linear',
+  showMethod: 'fadeIn',
+  hideMethod: 'fadeOut'
+};
 
 type Props = {
   pluginId: string
@@ -27,6 +41,15 @@ export default (props: Props) => {
         setFormFieldsInfo(_formFieldsInfo);
       } catch (e) {
         console.error(e);
+        if (e instanceof KintoneRestAPIError) {
+          if(e.code === 'GAIA_AP01') {
+            toastr.error('アプリを公開してから設定してください', 'エラー');
+          } else {
+            toastr.error(e.message, 'エラー');
+          }
+        } else {
+          toastr.error(e as string, 'エラー');
+        }
         return;
       }
 

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 
 import App from './App';
+import 'toastr/build/toastr.css';
 
 (($PLUGIN_ID) => {
   const root = createRoot(document.getElementById('app') as HTMLElement);
