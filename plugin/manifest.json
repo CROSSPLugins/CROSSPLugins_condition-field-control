@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "type": "APP",
   "desktop": {
     "js": ["js/userScreen.js"],
@@ -11,16 +11,16 @@
     "html": "html/settingScreen.html",
     "js": ["js/settingScreen.js"],
     "css": ["css/51-modern-default.css"],
-    "required_params": ["licensekey"]
+    "required_params": []
   },
   "name": {
-    "ja": "CROSSPLugins テンプレート",
-    "en": "CROSSPLugins テンプレート",
-    "zh": "CROSSPLugins テンプレート"
+    "ja": "CROSSPLugins 条件フィールド制御",
+    "en": "CROSSPLugins 条件フィールド制御",
+    "zh": "CROSSPLugins 条件フィールド制御"
   },
   "description": {
-    "ja": "これはテンプレートです。",
-    "en": "これはテンプレートです。",
-    "zh": "これはテンプレートです。"
+    "ja": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。",
+    "en": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。",
+    "zh": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。"
   }
 }

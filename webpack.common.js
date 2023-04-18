@@ -22,6 +22,12 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         use: 'ts-loader'
+      },
+      {
+        test: /\.css/,
+        use: [
+          'style-loader', 'css-loader'
+        ]
       }
     ]
   },
