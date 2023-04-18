@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "type": "APP",
   "desktop": {
     "js": ["js/userScreen.js"],
