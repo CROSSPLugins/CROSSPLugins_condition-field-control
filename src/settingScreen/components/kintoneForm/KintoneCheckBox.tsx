@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { useSkipEffect } from "../../utils";
 
 const style = {
@@ -19,7 +20,7 @@ type Props = {
 };
 
 export default (props: Props) => {
-  const [optionsState, setOptionsState] = useState(props.options);
+  const [optionsState, setOptionsState] = useState(props.options.map(e => ({ ...e, relate: uuidv4() })));
 
   useSkipEffect(() => {
     if(props.onChange) {
@@ -35,7 +36,7 @@ export default (props: Props) => {
             <span className="kintoneplugin-input-checkbox-item">
               <input 
                 type="checkbox"
-                id={e.value as string}
+                id={e.relate}
                 value={e.value}
                 checked={e.checked}
                 onChange={(event) => {
@@ -48,7 +49,7 @@ export default (props: Props) => {
                   setOptionsState(_optionsState);
                 }}
               />
-              <label htmlFor={e.value as string}>{e.value}</label>
+              <label htmlFor={e.relate}>{e.value}</label>
             </span>
           </div>
         ))
