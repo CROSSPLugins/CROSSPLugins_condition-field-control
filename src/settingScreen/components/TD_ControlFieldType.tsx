@@ -10,6 +10,7 @@ const filteringFormFields = (formFieldsInfo: FormFieldsInfo[], list: CustomField
     if(list[listIndex].controlType.value === 'required') {
       switch(e.type) {
         case 'CATEGORY':
+          return e.enabled;
         case 'CHECK_BOX':
         case 'DATE':
         case 'DATETIME':
@@ -33,6 +34,7 @@ const filteringFormFields = (formFieldsInfo: FormFieldsInfo[], list: CustomField
     else if (list[listIndex].controlType.value === 'uneditable') {
       switch(e.type) {
         case 'CATEGORY':
+          return e.enabled;
         case 'CHECK_BOX':
         case 'DATE':
         case 'DATETIME':

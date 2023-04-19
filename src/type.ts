@@ -35,6 +35,7 @@ export type FormFieldsInfo = {
       label: string
     }
   }
+  enabled: boolean
 };
 
 // システム設定

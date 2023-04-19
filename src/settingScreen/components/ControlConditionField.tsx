@@ -13,8 +13,9 @@ import FormErrorLabel from "./FormErrorLabel";
 const filteringFormFields = (formFieldsInfo: FormFieldsInfo[]) => {
   return formFieldsInfo.filter(e => {
     switch(e.type) {
-      case 'CALC':
       case 'CATEGORY':
+        return e.enabled;
+      case 'CALC':
       case 'CHECK_BOX':
       case 'CREATED_TIME':
       case 'DATE':
