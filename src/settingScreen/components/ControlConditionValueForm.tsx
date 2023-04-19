@@ -68,7 +68,7 @@ export default () => {
                     .filter(e => e.code === list[listIndex].config[configIndex].field.value)[0].options)
                     .map(e => {
                       if(configValue.some(f => f === e.label)) {
-                        return { value: e.label, checked: false };
+                        return { value: e.label, checked: true };
                       } else {
                         return { value: e.label, checked: false };
                       }
