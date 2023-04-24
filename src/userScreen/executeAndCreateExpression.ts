@@ -52,13 +52,21 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
       }
     case 'CHECK_BOX':
     case 'RADIO_BUTTON':
-    case 'DROP_DOWN':
     case 'MULTI_SELECT':
       switch (op) {
         case '次のいずれかを含む':
           return lterm.some((e: string) => rterm.some((f: string) => e === f));
         case '次のいずれかを含まない':
           return !lterm.some((e: string) => rterm.some((f: string) => e === f));
+        default:
+          throw new Error('想定外のエラーが発生しました');
+      }
+    case 'DROP_DOWN':
+      switch (op) {
+        case '次のいずれかを含む':
+          return rterm.some((e: string) => e === lterm);
+        case '次のいずれかを含まない':
+          return !rterm.some((e: string) => e === lterm);
         default:
           throw new Error('想定外のエラーが発生しました');
       }
