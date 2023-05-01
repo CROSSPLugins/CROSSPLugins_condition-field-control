@@ -18,7 +18,7 @@ const switchingOperator = (_fieldType: string | null) => {
     case 'NUMBER':
     case 'CALC':
     case 'RECORD_NUMBER':
-      return ['＝（等しい）', '≠（等しくない）', '＞（以上）', '＜（以下）'].map(e => ({ value: e, text: e }));
+      return ['＝（等しい）', '≠（等しくない）', '≧（以上）', '≦（以下）'].map(e => ({ value: e, text: e }));
     case 'MULTI_LINE_TEXT':
       return ['次のキーワードを含む', '次のキーワードを含まない'].map(e => ({ value: e, text: e }));
     case 'CHECK_BOX':

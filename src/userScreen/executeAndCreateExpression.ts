@@ -34,10 +34,10 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
           return lterm === rterm;
         case '≠（等しくない）':
           return lterm !== rterm;
-        case '＞（以上）':
-          return lterm > rterm;
-        case '＜（以下）':
-          return lterm < rterm;
+        case '≧（以上）':
+          return lterm >= rterm;
+        case '≦（以下）':
+          return lterm <= rterm;
         default:
           throw new Error('想定外のエラーが発生しました');
       }
