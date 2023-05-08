@@ -68,7 +68,7 @@ import { isBlankKintoneField } from "./utils";
             if (fieldCtrl.controlType === 'required') {
               // 条件なし
               if (fieldCtrl.config[0].field === null) {
-                if (isBlankKintoneField(event.record[fieldCtrl.targetField].value)) {
+                if (isBlankKintoneField(event.record[fieldCtrl.targetField].value, event.record[fieldCtrl.targetField].type)) {
                   isDisplayError = true;
                   event.record[fieldCtrl.targetField].error = '入力必須です';
                 }
@@ -89,7 +89,7 @@ import { isBlankKintoneField } from "./utils";
                   }
                 }
                 if (fieldCtrl.config.length === numMatch) {
-                  if (isBlankKintoneField(event.record[fieldCtrl.targetField].value)) {
+                  if (isBlankKintoneField(event.record[fieldCtrl.targetField].value, event.record[fieldCtrl.targetField].type)) {
                     isDisplayError = true;
                     event.record[fieldCtrl.targetField].error = '入力必須です';
                   }
