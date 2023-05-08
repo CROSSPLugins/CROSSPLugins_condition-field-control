@@ -1,5 +1,6 @@
 import { PluginSetting } from "../type";
 import { executeAndCreateExpression } from "./executeAndCreateExpression";
+import { isBlankKintoneField } from "./utils";
 
 (($PLUGIN_ID) => {
   // プラグイン設定情報取得
@@ -67,7 +68,7 @@ import { executeAndCreateExpression } from "./executeAndCreateExpression";
             if (fieldCtrl.controlType === 'required') {
               // 条件なし
               if (fieldCtrl.config[0].field === null) {
-                if (!event.record[fieldCtrl.targetField].value) {
+                if (isBlankKintoneField(event.record[fieldCtrl.targetField].value)) {
                   isDisplayError = true;
                   event.record[fieldCtrl.targetField].error = '入力必須です';
                 }
@@ -88,8 +89,10 @@ import { executeAndCreateExpression } from "./executeAndCreateExpression";
                   }
                 }
                 if (fieldCtrl.config.length === numMatch) {
-                  isDisplayError = true;
-                  event.record[fieldCtrl.targetField].error = '入力必須です';
+                  if (isBlankKintoneField(event.record[fieldCtrl.targetField].value)) {
+                    isDisplayError = true;
+                    event.record[fieldCtrl.targetField].error = '入力必須です';
+                  }
                 }
               }
             }
