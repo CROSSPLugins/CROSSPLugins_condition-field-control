@@ -21,7 +21,6 @@ const filteringFormFields = (formFieldsInfo: FormFieldsInfo[], list: CustomField
         case 'MULTI_SELECT':
         case 'NUMBER':
         case 'ORGANIZATION_SELECT':
-        case 'RADIO_BUTTON':
         case 'RICH_TEXT':
         case 'SINGLE_LINE_TEXT':
         case 'TIME':
