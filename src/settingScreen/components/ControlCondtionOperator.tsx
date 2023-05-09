@@ -13,8 +13,9 @@ const switchingOperator = (_fieldType: string | null) => {
   switch(_fieldType) {
     case 'SINGLE_LINE_TEXT':
     case 'LINK':
-    case 'CATEGORY':
       return ['＝（等しい）', '≠（等しくない）', '次のキーワードを含む', '次のキーワードを含まない'].map(e => ({ value: e, text: e }));
+    case 'CATEGORY':
+      return ['次のカテゴリーを含む', '次のカテゴリーを含まない'].map(e => ({ value: e, text: e }));
     case 'NUMBER':
     case 'CALC':
     case 'RECORD_NUMBER':

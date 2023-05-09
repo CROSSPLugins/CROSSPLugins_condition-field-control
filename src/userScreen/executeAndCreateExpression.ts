@@ -13,7 +13,6 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
   switch (fieldType) {
     case 'SINGLE_LINE_TEXT':
     case 'LINK':
-    case 'CATEGORY':
       switch (op) {
         case '＝（等しい）':
           return lterm === rterm;
@@ -23,6 +22,15 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
           return new RegExp(rterm).test(lterm);
         case '次のキーワードを含まない':
           return !(new RegExp(rterm).test(lterm));
+        default:
+          throw new Error('想定外のエラーが発生しました');
+      }
+    case 'CATEGORY':
+      switch (op) {
+        case '次のカテゴリーを含む':
+          return lterm.some((e: string) => e === rterm);
+        case '次のカテゴリーを含まない':
+          return !lterm.some((e: string) => e === rterm);
         default:
           throw new Error('想定外のエラーが発生しました');
       }
