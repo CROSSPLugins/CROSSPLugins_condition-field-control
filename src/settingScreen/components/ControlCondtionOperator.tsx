@@ -1,10 +1,19 @@
 import { useContext } from "react";
 import { useRecoilState } from "recoil";
+import { css } from "@emotion/react";
 import { fieldControlList } from "../store";
 import { ControlConditionContext } from "./TD_ControlCondition";
 import KintoneDropDown from "./kintoneForm/KintoneDropDown";
 import { deepcp } from "../utils";
 import FormErrorLabel from "./FormErrorLabel";
+
+const style = {
+  dropdown: css({
+    '.kintoneplugin-dropdown': {
+      width: '250px'
+    }
+  })
+};
 
 /**
  * 「制御の条件設定」のフィールドタイプに応じて選択肢を切り替える
@@ -59,6 +68,7 @@ export default () => {
           setList(_list);
         }}
         disabled={fieldType === null}
+        overcss={style.dropdown}
       />
       <FormErrorLabel error={list[listIndex].config[configIndex].op.fieldError}>
         {list[listIndex].config[configIndex].op.errorText}
