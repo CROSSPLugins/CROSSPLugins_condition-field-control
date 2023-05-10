@@ -33,6 +33,8 @@ import { isBlankKintoneField } from "./utils";
               else {
                 let numMatch = 0;
                 for (const ctrlConfig of fieldCtrl.config) {
+                  // フィールド情報にアクセス出来ないときはスキップ
+                  if (!event.record[ctrlConfig.field as string]) continue;
                   if (
                     executeAndCreateExpression(
                       event.record[ctrlConfig.field as string].value,
@@ -52,6 +54,7 @@ import { isBlankKintoneField } from "./utils";
           }
           return event;
         } catch (e) {
+          console.error(e);
           event.error = e;
           return event;
         }
@@ -77,6 +80,8 @@ import { isBlankKintoneField } from "./utils";
               else {
                 let numMatch = 0;
                 for (const ctrlConfig of fieldCtrl.config) {
+                  // フィールド情報にアクセス出来ないときはスキップ
+                  if (!event.record[ctrlConfig.field as string]) continue;
                   if (
                     executeAndCreateExpression(
                       event.record[ctrlConfig.field as string].value,
@@ -103,6 +108,7 @@ import { isBlankKintoneField } from "./utils";
           }
           return event;
         } catch (e) {
+          console.error(e);
           event.error = e;
           return event;
         }
@@ -129,6 +135,8 @@ import { isBlankKintoneField } from "./utils";
               else {
                 let numMatch = 0;
                 for (const ctrlConfig of fieldCtrl.config) {
+                  // フィールド情報にアクセス出来ないときはスキップ
+                  if (!event.record[ctrlConfig.field as string]) continue;
                   if (
                     executeAndCreateExpression(
                       event.record[ctrlConfig.field as string].value,
@@ -150,6 +158,7 @@ import { isBlankKintoneField } from "./utils";
           }
           return event;
         } catch (e) {
+          console.error(e);
           event.error = e;
           return event;
         }
