@@ -1,4 +1,6 @@
 import { DependencyList, useEffect, useState } from "react";
+import toastr from "toastr";
+import 'toastr/build/toastr.css';
 
 function deepcp<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj))
@@ -20,7 +22,25 @@ function useSkipEffect(effect: () => void, deps: DependencyList) {
   }, deps);
 }
 
+toastr.options = {
+  closeButton: false,
+  debug: false,
+  newestOnTop: false,
+  progressBar: false,
+  positionClass: 'toast-top-center',
+  preventDuplicates: false,
+  showEasing: 'swing',
+  hideEasing: 'linear',
+  showMethod: 'fadeIn',
+  hideMethod: 'fadeOut'
+};
+
+const errorPopup = (message: string, title: string) => {
+  toastr.error(message, title);
+};
+
 export {
   deepcp,
-  useSkipEffect
+  useSkipEffect,
+  errorPopup
 };

@@ -1,5 +1,6 @@
 import { PluginSetting } from "../type";
 import { executeAndCreateExpression } from "./executeAndCreateExpression";
+import { isBlankKintoneField } from "./utils";
 
 (($PLUGIN_ID) => {
   // プラグイン設定情報取得
@@ -21,34 +22,42 @@ import { executeAndCreateExpression } from "./executeAndCreateExpression";
     kintone.events.on(
       ['app.record.index.edit.show', 'app.record.edit.show', 'app.record.create.show'], 
       (event) => {
-        for (const fieldCtrl of customizeSetting.fieldControlList) {
-          if (fieldCtrl.controlType === 'uneditable') {
-            // 条件なし
-            if (fieldCtrl.config[0].field === null) {
-              event.record[fieldCtrl.targetField].disabled = true;
-            }
-            // 複数の条件に合致するか
-            else {
-              let numMatch = 0;
-              for (const ctrlConfig of fieldCtrl.config) {
-                if (
-                  executeAndCreateExpression(
-                    event.record[ctrlConfig.field as string].value, 
-                    ctrlConfig.op as string, 
-                    ctrlConfig.value, 
-                    event.record[ctrlConfig.field as string].type
-                  )
-                ) {
-                  numMatch++;
-                }
-              }
-              if (fieldCtrl.config.length === numMatch) {
+        try {
+          for (const fieldCtrl of customizeSetting.fieldControlList) {
+            if (fieldCtrl.controlType === 'uneditable') {
+              // 条件なし
+              if (fieldCtrl.config[0].field === null) {
                 event.record[fieldCtrl.targetField].disabled = true;
+              }
+              // 複数の条件に合致するか
+              else {
+                let numMatch = 0;
+                for (const ctrlConfig of fieldCtrl.config) {
+                  // フィールド情報にアクセス出来ないときはスキップ
+                  if (!event.record[ctrlConfig.field as string]) continue;
+                  if (
+                    executeAndCreateExpression(
+                      event.record[ctrlConfig.field as string].value,
+                      ctrlConfig.op as string,
+                      ctrlConfig.value,
+                      event.record[ctrlConfig.field as string].type
+                    )
+                  ) {
+                    numMatch++;
+                  }
+                }
+                if (fieldCtrl.config.length === numMatch) {
+                  event.record[fieldCtrl.targetField].disabled = true;
+                }
               }
             }
           }
+          return event;
+        } catch (e) {
+          console.error(e);
+          event.error = e;
+          return event;
         }
-        return event;
     });
     // レコード一覧編集保存実行時 入力必須
     // レコード編集保存実行時 入力必須
@@ -56,42 +65,53 @@ import { executeAndCreateExpression } from "./executeAndCreateExpression";
     kintone.events.on(
       ['app.record.index.edit.submit', 'app.record.edit.submit', 'app.record.create.submit'],
       (event) => {
-        let isDisplayError = false;
-        for (const fieldCtrl of customizeSetting.fieldControlList) {
-          if (fieldCtrl.controlType === 'required') {
-            // 条件なし
-            if (fieldCtrl.config[0].field === null) {
-              if (!event.record[fieldCtrl.targetField].value) {
-                isDisplayError = true;
-                event.record[fieldCtrl.targetField].error = '入力必須です';
-              }
-            }
-            // 複数の条件に合致するか
-            else {
-              let numMatch = 0;
-              for (const ctrlConfig of fieldCtrl.config) {
-                if (
-                  executeAndCreateExpression(
-                    event.record[ctrlConfig.field as string].value, 
-                    ctrlConfig.op as string, 
-                    ctrlConfig.value, 
-                    event.record[ctrlConfig.field as string].type
-                  )
-                ) {
-                  numMatch++;
+        try {
+          let isDisplayError = false;
+          for (const fieldCtrl of customizeSetting.fieldControlList) {
+            if (fieldCtrl.controlType === 'required') {
+              // 条件なし
+              if (fieldCtrl.config[0].field === null) {
+                if (isBlankKintoneField(event.record[fieldCtrl.targetField].value, event.record[fieldCtrl.targetField].type)) {
+                  isDisplayError = true;
+                  event.record[fieldCtrl.targetField].error = '入力必須です';
                 }
               }
-              if (fieldCtrl.config.length === numMatch) {
-                event.record[fieldCtrl.targetField].error = '入力必須です';
+              // 複数の条件に合致するか
+              else {
+                let numMatch = 0;
+                for (const ctrlConfig of fieldCtrl.config) {
+                  // フィールド情報にアクセス出来ないときはスキップ
+                  if (!event.record[ctrlConfig.field as string]) continue;
+                  if (
+                    executeAndCreateExpression(
+                      event.record[ctrlConfig.field as string].value,
+                      ctrlConfig.op as string,
+                      ctrlConfig.value,
+                      event.record[ctrlConfig.field as string].type
+                    )
+                  ) {
+                    numMatch++;
+                  }
+                }
+                if (fieldCtrl.config.length === numMatch) {
+                  if (isBlankKintoneField(event.record[fieldCtrl.targetField].value, event.record[fieldCtrl.targetField].type)) {
+                    isDisplayError = true;
+                    event.record[fieldCtrl.targetField].error = '入力必須です';
+                  }
+                }
               }
             }
           }
-        }
 
-        if (isDisplayError) {
-          event.error = 'エラーです';
+          if (isDisplayError) {
+            event.error = 'エラーです';
+          }
+          return event;
+        } catch (e) {
+          console.error(e);
+          event.error = e;
+          return event;
         }
-        return event;
     });
     // レコード一覧編集画面 フィールド値変更時 編集不可
     // レコード編集画面 フィールド値変更時 編集不可
@@ -104,36 +124,44 @@ import { executeAndCreateExpression } from "./executeAndCreateExpression";
           }))
           .flat(2),
       (event) => {
-        for (const fieldCtrl of customizeSetting.fieldControlList) {
-          if (fieldCtrl.controlType === 'uneditable') {
-            // 条件なし
-            if (fieldCtrl.config[0].field === null) {
-              event.record[fieldCtrl.targetField].disabled = true;
-            }
-            // 複数の条件に合致するか
-            else {
-              let numMatch = 0;
-              for (const ctrlConfig of fieldCtrl.config) {
-                if (
-                  executeAndCreateExpression(
-                    event.record[ctrlConfig.field as string].value, 
-                    ctrlConfig.op as string, 
-                    ctrlConfig.value, 
-                    event.record[ctrlConfig.field as string].type
-                  )
-                ) {
-                  numMatch++;
-                }
-              }
-              if (fieldCtrl.config.length === numMatch) {
+        try {
+          for (const fieldCtrl of customizeSetting.fieldControlList) {
+            if (fieldCtrl.controlType === 'uneditable') {
+              // 条件なし
+              if (fieldCtrl.config[0].field === null) {
                 event.record[fieldCtrl.targetField].disabled = true;
-              } else {
-                event.record[fieldCtrl.targetField].disabled = false;
+              }
+              // 複数の条件に合致するか
+              else {
+                let numMatch = 0;
+                for (const ctrlConfig of fieldCtrl.config) {
+                  // フィールド情報にアクセス出来ないときはスキップ
+                  if (!event.record[ctrlConfig.field as string]) continue;
+                  if (
+                    executeAndCreateExpression(
+                      event.record[ctrlConfig.field as string].value,
+                      ctrlConfig.op as string,
+                      ctrlConfig.value,
+                      event.record[ctrlConfig.field as string].type
+                    )
+                  ) {
+                    numMatch++;
+                  }
+                }
+                if (fieldCtrl.config.length === numMatch) {
+                  event.record[fieldCtrl.targetField].disabled = true;
+                } else {
+                  event.record[fieldCtrl.targetField].disabled = false;
+                }
               }
             }
           }
+          return event;
+        } catch (e) {
+          console.error(e);
+          event.error = e;
+          return event;
         }
-        return event;
       }
     );
   }

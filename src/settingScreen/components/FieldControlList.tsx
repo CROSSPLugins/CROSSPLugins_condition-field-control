@@ -153,7 +153,7 @@ export default () => {
           </tr>
           <tr>
             <th>フィールド</th>
-            <th>オペレーター</th>
+            <th>条件指定</th>
             <th>値</th>
           </tr>
         </thead>

@@ -63,17 +63,15 @@ export default () => {
           return (
             <KintoneCheckBox
               options={
-                Object.values(
-                  formFieldsInfo
-                    .filter(e => e.code === list[listIndex].config[configIndex].field.value)[0].options)
-                    .map(e => {
-                      if(configValue.some(f => f === e.label)) {
-                        return { value: e.label, checked: true };
-                      } else {
-                        return { value: e.label, checked: false };
-                      }
-                    })
-                }
+                Object.values(formFieldsInfo.filter(e => e.code === list[listIndex].config[configIndex].field.value)[0].options)
+                .map(e => {
+                  if(configValue.some(f => f === e.label)) {
+                    return { value: e.label, checked: true };
+                  } else {
+                    return { value: e.label, checked: false };
+                  }
+                })
+              }
               onChange={value => {
                 setList((_old_list) => {
                   const _list = deepcp(_old_list);

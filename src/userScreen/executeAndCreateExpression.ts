@@ -13,7 +13,6 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
   switch (fieldType) {
     case 'SINGLE_LINE_TEXT':
     case 'LINK':
-    case 'CATEGORY':
       switch (op) {
         case '＝（等しい）':
           return lterm === rterm;
@@ -26,6 +25,15 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
         default:
           throw new Error('想定外のエラーが発生しました');
       }
+    case 'CATEGORY':
+      switch (op) {
+        case '次のカテゴリーを含む':
+          return lterm.some((e: string) => e === rterm);
+        case '次のカテゴリーを含まない':
+          return !lterm.some((e: string) => e === rterm);
+        default:
+          throw new Error('想定外のエラーが発生しました');
+      }
     case 'NUMBER':
     case 'CALC':
     case 'RECORD_NUMBER':
@@ -34,10 +42,10 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
           return lterm === rterm;
         case '≠（等しくない）':
           return lterm !== rterm;
-        case '＞（以上）':
-          return lterm > rterm;
-        case '＜（以下）':
-          return lterm < rterm;
+        case '≧（以上）':
+          return lterm >= rterm;
+        case '≦（以下）':
+          return lterm <= rterm;
         default:
           throw new Error('想定外のエラーが発生しました');
       }
@@ -51,8 +59,6 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
           throw new Error('想定外のエラーが発生しました');
       }
     case 'CHECK_BOX':
-    case 'RADIO_BUTTON':
-    case 'DROP_DOWN':
     case 'MULTI_SELECT':
       switch (op) {
         case '次のいずれかを含む':
@@ -62,8 +68,18 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
         default:
           throw new Error('想定外のエラーが発生しました');
       }
+    case 'RADIO_BUTTON':
+    case 'DROP_DOWN':
+      switch (op) {
+        case '次のいずれかを含む':
+          return rterm.some((e: string) => e === lterm);
+        case '次のいずれかを含まない':
+          return !rterm.some((e: string) => e === lterm);
+        default:
+          throw new Error('想定外のエラーが発生しました');
+      }
     case 'DATE': {
-      if (!lterm) return false;
+      if (typeof lterm === 'undefined') lterm = null;
       let rValue;
       switch (rterm) {
         case 'today':
@@ -92,7 +108,17 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
       }
     }
     case 'TIME': {
-      if (!lterm) return false;
+      if (!lterm) {
+        if (op === '＝（等しい）') {
+          return false;
+        }
+        else if (op === '≠（等しくない）') {
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
       const lValue = dayjs().hour(lterm.split(':')[0]).minute(lterm.split(':')[1]);
       let rValue;
       switch (rterm) {
@@ -118,7 +144,7 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
     case 'DATETIME':
     case 'CREATED_TIME':
     case 'UPDATED_TIME': {
-      if (!lterm) return false;
+      if (typeof lterm === 'undefined') lterm = null;
       switch (rterm) {
         case 'today': {
           const rValue = dayjs();

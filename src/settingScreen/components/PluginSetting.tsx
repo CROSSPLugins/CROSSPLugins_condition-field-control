@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import FieldControlList from './FieldControlList';
 import { fieldControlList, formFieldsInfo as _formFieldsInfo } from '../store';
 import { PluginSetting } from '../../type';
-import { deepcp } from '../utils';
+import { deepcp, errorPopup } from '../utils';
 
 const style = {
   container: css({
@@ -126,9 +126,12 @@ export default (props: { show: boolean }) => {
         })
       };
     });
-
     setList(_list);
     
+    if (!isCorrect) {
+      errorPopup('入力内容に誤りがあります。', 'プラグイン設定エラー');
+    }
+
     return isCorrect;
   };
 
@@ -136,8 +139,10 @@ export default (props: { show: boolean }) => {
     // ValueCheck
     if(!checkSetting()) return;
 
+    // TODO: システム情報部分のみ getConfig して systemSetting に保存処理書く
+
     const pluginSetting: PluginSetting = {
-      systemSetting: { _: {} },
+      systemSetting: { _: {} }, // TODO: システム情報セット
       customizeSetting: {
         fieldControlList: list.map(e => ({
           targetField: e.targetField.value as string,

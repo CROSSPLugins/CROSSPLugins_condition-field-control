@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useSkipEffect } from "../../utils";
 
@@ -11,6 +11,14 @@ const style = {
   })
 };
 
+const usePrevious = <T,>(value: T) => {
+  const ref = useRef(value);
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
+
 type Props = {
   options: {
     value: string | number
@@ -21,12 +29,21 @@ type Props = {
 
 export default (props: Props) => {
   const [optionsState, setOptionsState] = useState(props.options.map(e => ({ ...e, relate: uuidv4() })));
+  const prevOptions = usePrevious(props.options);
 
   useSkipEffect(() => {
     if(props.onChange) {
       props.onChange(optionsState.filter(e => e.checked).map(e => e.value));
     }
   }, [optionsState]);
+
+  useSkipEffect(() => {
+    // onChange が実行された時、options も更新される場合の対処
+    // 変更があるか確認
+    if (JSON.stringify(prevOptions) !== JSON.stringify(props.options)) {
+      setOptionsState(props.options.map(e => ({ ...e, relate: uuidv4() })));
+    }
+  }, [props.options]);
 
   return (
     <div className="crossplugins-checkboxes" css={style.checkboxes}>
