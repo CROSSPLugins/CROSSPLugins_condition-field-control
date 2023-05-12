@@ -1,6 +1,8 @@
+import { Properties } from "@kintone/rest-api-client/lib/client/types";
+import { RadioButton } from "@kintone/rest-api-client/lib/KintoneFields/types/property";
 import { PluginSetting } from "../type";
 import { executeAndCreateExpression } from "./executeAndCreateExpression";
-import { isBlankKintoneField } from "./utils";
+import { isBlankKintoneField, getFormFields } from "./utils";
 
 (($PLUGIN_ID) => {
   // プラグイン設定情報取得
@@ -16,12 +18,14 @@ import { isBlankKintoneField } from "./utils";
 
   if(config.customizeSetting) {
     const customizeSetting = config.customizeSetting;
+    // アプリフォーム情報
+    let formFields: { properties: Properties };
     // レコード一覧編集画面 編集不可
     // レコード編集画面 編集不可
     // レコード追加画面 編集不可
     kintone.events.on(
       ['app.record.index.edit.show', 'app.record.edit.show', 'app.record.create.show'], 
-      (event) => {
+      async (event) => {
         try {
           for (const fieldCtrl of customizeSetting.fieldControlList) {
             if (fieldCtrl.controlType === 'uneditable') {
@@ -35,15 +39,36 @@ import { isBlankKintoneField } from "./utils";
                 for (const ctrlConfig of fieldCtrl.config) {
                   // フィールド情報にアクセス出来ないときはスキップ
                   if (!event.record[ctrlConfig.field as string]) continue;
+                  // ラジオボタン の値が 空文字の場合
                   if (
-                    executeAndCreateExpression(
-                      event.record[ctrlConfig.field as string].value,
-                      ctrlConfig.op as string,
-                      ctrlConfig.value,
-                      event.record[ctrlConfig.field as string].type
-                    )
+                    event.record[ctrlConfig.field as string].type === 'RADIO_BUTTON' &&
+                    event.record[ctrlConfig.field as string].value === ''
                   ) {
-                    numMatch++;
+                    // フォーム情報が未取得の場合は取得する
+                    if (!formFields) formFields = await getFormFields();
+                    if (
+                      executeAndCreateExpression(
+                        event.record[ctrlConfig.field as string].value,
+                        ctrlConfig.op as string,
+                        ctrlConfig.value,
+                        event.record[ctrlConfig.field as string].type,
+                        (formFields.properties[ctrlConfig.field as string] as RadioButton).defaultValue
+                      )
+                    ) {
+                      numMatch++;
+                    }
+                  }
+                  else {
+                    if (
+                      executeAndCreateExpression(
+                        event.record[ctrlConfig.field as string].value,
+                        ctrlConfig.op as string,
+                        ctrlConfig.value,
+                        event.record[ctrlConfig.field as string].type
+                      )
+                    ) {
+                      numMatch++;
+                    }
                   }
                 }
                 if (fieldCtrl.config.length === numMatch) {

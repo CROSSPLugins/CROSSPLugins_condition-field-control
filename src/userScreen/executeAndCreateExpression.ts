@@ -9,7 +9,7 @@ dayjs.extend(isSameOfAfter);
  *  lterm … フィールド値
  *  rterm … プラグイン設定値
  */
-export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, fieldType: string): boolean => {
+export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, fieldType: string, fieldDefaultValue?: string | number): boolean => {
   switch (fieldType) {
     case 'SINGLE_LINE_TEXT':
     case 'LINK':
@@ -71,9 +71,9 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
     case 'RADIO_BUTTON':
       switch (op) {
         case '次のいずれかを含む':
-          return (rterm as []).length ? rterm.some((e: string) => e === lterm) : !lterm;
+          return (rterm as []).length ? rterm.some((e: string) => e === (lterm ? lterm : fieldDefaultValue)) : !(lterm ? lterm : fieldDefaultValue);
         case '次のいずれかを含まない':
-          return (rterm as []).length ? !rterm.some((e: string) => e === lterm) : lterm;
+          return (rterm as []).length ? !rterm.some((e: string) => e === (lterm ? lterm : fieldDefaultValue)) : lterm ? lterm : fieldDefaultValue;
         default:
           throw new Error('想定外のエラーが発生しました');
       }
