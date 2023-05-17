@@ -16,7 +16,8 @@
     "plugin:upload": "dotenv -- cross-var kintone-plugin-uploader --base-url $KINTONE_URL --username $KINTONE_USER --password $KINTONE_PW dist/%npm_package_config_plugin_name%.%npm_package_version%.zip --watch --waiting-dialog-ms 3000",
     "start": "node scripts/npm-start.js",
     "lint": "npx eslint src/**/*",
-    "license": "license-checker --production --json --excludePackages %npm_package_name%@%npm_package_version% --customPath ./license/customFormat.json --out ./license/license.json"
+    "license": "license-checker --production --json --excludePackages %npm_package_name%@%npm_package_version% --customPath ./license/customFormat.json --out ./license/license.json",
+    "postlicense": "node license/license.js"
   },
   "devDependencies": {
     "@cybozu/eslint-config": "^18.0.0",
