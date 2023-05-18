@@ -1,8 +1,9 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { Licensekey, pluginId } from '../store';
 import decryptLicensekey from '../../common/modules/decryptLicensekey';
-
-import config from '../../common/config/config.json';
+import { PluginSetting } from '../../type';
 
 const style = {
   content: css({
@@ -62,6 +63,8 @@ const isNotSameSubDomainName = (subDomainName: string) => {
 export default () => {
   const [licensekeyValue, setLicensekey] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const setRecoilLicensekey = useSetRecoilState(Licensekey);
+  const _pluginId = useRecoilValue(pluginId);
 
   const registerLicensekey = () => {
     // 入力値が空白の場合
@@ -87,11 +90,33 @@ export default () => {
     }
 
     // 正しいライセンスキーが入力された場合
-    // - ライセンスキーをstoreにセット、一覧画面へ遷移する
-    // kintone.plugin.app.setConfig({
-    //   licensekey: licensekeyValue,
-    //   // 各プラグインで利用している設定値を設定
-    // });
+    // - ライセンスキーをstoreにセット
+    setRecoilLicensekey(licensekeyValue);
+    // システム設定情報: ライセンスキーを保存
+    // プラグイン設定情報: 保存済み情報を取得しそのまま保存
+    const charconfig = kintone.plugin.app.getConfig(_pluginId).config;
+    let customizeSetting;
+    if (!charconfig) {
+      customizeSetting = undefined;
+    } else {
+      const config: PluginSetting = JSON.parse(charconfig);
+      if (!config.customizeSetting) {
+        customizeSetting = undefined;
+      } else {
+        customizeSetting = config.customizeSetting;
+      }
+    }
+
+    const pluginSetting: PluginSetting = {
+      systemSetting: { licenseKey: licensekeyValue },
+      customizeSetting
+    };
+
+    kintone.plugin.app.setConfig(
+      {
+        config: JSON.stringify(pluginSetting)
+      }
+    );
     console.log('[DEBUG] ライセンスキーを保存');
   };
   return (

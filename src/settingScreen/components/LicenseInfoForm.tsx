@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import isWithinExpirationDate from '../../common/modules/isWithinExpirationDate';
 import decryptLicensekey from '../../common/modules/decryptLicensekey';
-import Licensekey from '../store/Licensekey';
+import { Licensekey } from '../store';
 
 const TABLE_BORDER = '1px solid #5a5a5a';
 const style = {
@@ -72,7 +72,7 @@ export default () => {
     setCustomerNumber(licenseInfo.customerNumber);
     setExpirationDate(getExpirationDateText(licenseInfo.expirationDateUnixTime));
     setStatus(getLicenseStatus(licenseInfo.expirationDateUnixTime));
-  }, []);
+  }, [licensekey]);
 
   return (
     <>

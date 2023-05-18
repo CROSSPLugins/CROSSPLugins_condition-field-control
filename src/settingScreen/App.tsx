@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { KintoneRestAPIClient, KintoneRestAPIError } from '@kintone/rest-api-client';
 import { FormFieldsInfo, PluginSetting } from '../type';
 import PageRoot from './components/PageRoot';
-import { fieldControlList, formFieldsInfo } from './store';
+import { fieldControlList, formFieldsInfo, Licensekey, pluginId } from './store';
 import { errorPopup } from './utils';
 
 type Props = {
@@ -14,9 +14,13 @@ type Props = {
 export default (props: Props) => {
   const setFieldControlList = useSetRecoilState(fieldControlList);
   const setFormFieldsInfo = useSetRecoilState(formFieldsInfo);
+  const setLicenseKey = useSetRecoilState(Licensekey);
+  const setPluginId = useSetRecoilState(pluginId);
 
   useEffect(() => {
     (async () => {
+      setPluginId(props.pluginId);
+
       const charconfig = kintone.plugin.app.getConfig(props.pluginId).config;
 
       let _formFieldsInfo: FormFieldsInfo[];
@@ -44,6 +48,10 @@ export default (props: Props) => {
       if(!charconfig) return;
 
       const config: PluginSetting = JSON.parse(charconfig);
+      // システム設定がある時の処理
+      if (config.systemSetting) {
+        setLicenseKey(config.systemSetting.licenseKey ?? '');
+      }
       // カスタマイズ設定がある時の処理
       if(config.customizeSetting) {
         // 保存済みの設定を反映[フィールド制御対象一覧]

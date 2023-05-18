@@ -40,7 +40,7 @@ export type FormFieldsInfo = {
 
 // システム設定
 export type SystemSetting = {
-  _: any
+  licenseKey: string
 };
 
 // カスタマイズ設定

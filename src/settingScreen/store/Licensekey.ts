@@ -5,4 +5,4 @@ const Licensekey = atom({
   default: ''
 });
 
-export default Licensekey;
+export { Licensekey };
