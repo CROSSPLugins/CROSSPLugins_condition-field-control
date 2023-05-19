@@ -17,7 +17,10 @@
     "start": "node scripts/npm-start.js",
     "lint": "npx eslint src/**/*",
     "license": "license-checker --production --json --excludePackages %npm_package_name%@%npm_package_version% --customPath ./license/customFormat.json --out ./license/license.json",
-    "postlicense": "node license/license.js"
+    "postlicense": "node license/license.js",
+    "predev": "npm run license",
+    "predev:w": "npm run license",
+    "preprod": "npm run license"
   },
   "devDependencies": {
     "@cybozu/eslint-config": "^18.0.0",
