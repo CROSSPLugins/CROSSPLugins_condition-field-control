@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
-import { KintoneRestAPIClient, KintoneRestAPIError } from '@kintone/rest-api-client';
 import { FormFieldsInfo, PluginSetting } from '../type';
 import PageRoot from './components/PageRoot';
 import { fieldControlList, formFieldsInfo, Licensekey, pluginId } from './store';
@@ -25,14 +24,13 @@ export default (props: Props) => {
 
       let _formFieldsInfo: FormFieldsInfo[];
       try {
-        const client = new KintoneRestAPIClient();
         // アプリフォーム情報を取得
-        const resp: any = await client.app.getFormFields({ app: kintone.app.getId() as number });
+        const resp = await kintone.api(kintone.api.url('/k/v1/app/form/fields.json', true), 'GET', { app: kintone.app.getId() as number });
         _formFieldsInfo = Object.values(resp.properties) as FormFieldsInfo[];
         setFormFieldsInfo(_formFieldsInfo);
-      } catch (e) {
+      } catch (e: any) {
         console.error(e);
-        if (e instanceof KintoneRestAPIError) {
+        if (typeof e.code !== 'undefined') {
           if(e.code === 'GAIA_AP01') {
             errorPopup('アプリを公開してから設定してください', 'エラー');
           } else {
