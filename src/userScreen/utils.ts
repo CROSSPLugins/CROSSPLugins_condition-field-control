@@ -1,4 +1,3 @@
-import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { Properties } from "@kintone/rest-api-client/lib/client/types";
 
 /**
@@ -20,8 +19,7 @@ const isBlankKintoneField = (value: string | string[], fieldType: string): boole
 };
 
 const getFormFields = async (): Promise<{ properties: Properties }> => {
-  const client = new KintoneRestAPIClient();
-  return await client.app.getFormFields({ app: kintone.app.getId() as number });
+  return await kintone.api(kintone.api.url('/k/v1/app/form/fields.json', true), 'GET', { app: kintone.app.getId() as number });
 };
 
 export {
