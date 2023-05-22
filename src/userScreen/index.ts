@@ -3,6 +3,8 @@ import { RadioButton } from "@kintone/rest-api-client/lib/KintoneFields/types/pr
 import { PluginSetting } from "../type";
 import { executeAndCreateExpression } from "./executeAndCreateExpression";
 import { isBlankKintoneField, getFormFields } from "./utils";
+import decryptLicenseInfo from "../common/modules/decryptLicensekey";
+import isWithinExpirationDate from "../common/modules/isWithinExpirationDate";
 
 (($PLUGIN_ID) => {
   // プラグイン設定情報取得
@@ -14,7 +16,16 @@ import { isBlankKintoneField, getFormFields } from "./utils";
   const config: PluginSetting = JSON.parse(charconfig);
   
   // ライセンス判定
-  // if(license === false) return;
+  if (config.systemSetting) {
+    // falsyな値の場合は処理しない
+    if (!config.systemSetting.licenseKey) return;
+    const licenseInfo = decryptLicenseInfo(config.systemSetting.licenseKey);
+    // 有効期限判定
+    if (!isWithinExpirationDate(licenseInfo.expirationDateUnixTime)) return;
+  } else {
+    return;
+  }
+  console.log('[DEBUG] ライセンス有効');
 
   if(config.customizeSetting) {
     const customizeSetting = config.customizeSetting;
