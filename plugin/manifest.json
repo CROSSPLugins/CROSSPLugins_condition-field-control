@@ -22,5 +22,10 @@
     "ja": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。",
     "en": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。",
     "zh": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。"
+  },
+  "homepage_url": {
+    "ja": "https://www.crosshead.co.jp/solution/crossplugins/",
+    "en": "https://www.crosshead.co.jp/solution/crossplugins/",
+    "zh": "https://www.crosshead.co.jp/solution/crossplugins/"
   }
 }
