@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import FieldControlList from './FieldControlList';
-import { fieldControlList, formFieldsInfo as _formFieldsInfo } from '../store';
+import { fieldControlList, formFieldsInfo as _formFieldsInfo, Licensekey } from '../store';
 import { PluginSetting } from '../../type';
 import { deepcp, errorPopup } from '../utils';
 
@@ -29,6 +29,7 @@ const style = {
 export default (props: { show: boolean }) => {
   const [list, setList] = useRecoilState(fieldControlList);
   const formFieldsInfo = useRecoilValue(_formFieldsInfo);
+  const licenseKey = useRecoilValue(Licensekey);
 
   const checkSetting = (): boolean => {
     let isCorrect = true;
@@ -139,10 +140,8 @@ export default (props: { show: boolean }) => {
     // ValueCheck
     if(!checkSetting()) return;
 
-    // TODO: システム情報部分のみ getConfig して systemSetting に保存処理書く
-
     const pluginSetting: PluginSetting = {
-      systemSetting: { _: {} }, // TODO: システム情報セット
+      systemSetting: { licenseKey },
       customizeSetting: {
         fieldControlList: list.map(e => ({
           targetField: e.targetField.value as string,
