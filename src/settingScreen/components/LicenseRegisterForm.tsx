@@ -4,6 +4,7 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { Licensekey, pluginId } from '../store';
 import decryptLicensekey from '../../common/modules/decryptLicensekey';
 import { PluginSetting } from '../../type';
+import { successPopup } from '../utils';
 
 const style = {
   content: css({
@@ -115,9 +116,13 @@ export default () => {
     kintone.plugin.app.setConfig(
       {
         config: JSON.stringify(pluginSetting)
+      },
+      () => {
+        successPopup('ライセンスキーが正常に保存されました。');
+        setLicensekey('');
+        console.log('[DEBUG] ライセンスキーを保存');
       }
     );
-    console.log('[DEBUG] ライセンスキーを保存');
   };
   return (
     <div css={style.content}>
@@ -129,6 +134,7 @@ export default () => {
             <input
               className='kintoneplugin-input-text'
               type='text'
+              value={licensekeyValue}
               onChange={(event) => {
                 setLicensekey(event.target.value);
               }}

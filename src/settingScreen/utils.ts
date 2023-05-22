@@ -35,6 +35,10 @@ toastr.options = {
   hideMethod: 'fadeOut'
 };
 
+const successPopup = (message: string) => {
+  toastr.success(message);
+}
+
 const errorPopup = (message: string, title: string) => {
   toastr.error(message, title);
 };
@@ -42,5 +46,6 @@ const errorPopup = (message: string, title: string) => {
 export {
   deepcp,
   useSkipEffect,
+  successPopup,
   errorPopup
 };
