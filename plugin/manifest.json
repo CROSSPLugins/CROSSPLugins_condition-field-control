@@ -15,13 +15,13 @@
   },
   "name": {
     "ja": "CROSSPLugins 条件フィールド制御",
-    "en": "CROSSPLugins 条件フィールド制御",
-    "zh": "CROSSPLugins 条件フィールド制御"
+    "en": "CROSSPLugins Field controller.",
+    "zh": "CROSSPLugins Field controller."
   },
   "description": {
-    "ja": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。",
-    "en": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。",
-    "zh": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。条件に応じたフィールド制御がおこなえます。"
+    "ja": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。フィールドを条件に応じて入力必須・編集不可に制御できるプラグインです。",
+    "en": "CROSSPLugins is a plugin provided by CROSS HEAD. This plugin allows you  whether fields are required field or prohibited to edit by conditions.",
+    "zh": "CROSSPLugins is a plugin provided by CROSS HEAD. This plugin allows you  whether fields are required field or prohibited to edit by conditions."
   },
   "homepage_url": {
     "ja": "https://www.crosshead.co.jp/solution/crossplugins/",
