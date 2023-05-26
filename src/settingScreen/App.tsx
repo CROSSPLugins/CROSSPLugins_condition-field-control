@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
-import { KintoneRestAPIClient, KintoneRestAPIError } from '@kintone/rest-api-client';
-import { FormFieldsInfo, PluginSetting } from '../type';
+import { FormFieldsInfo, PluginConfig, PluginSetting } from '../type';
 import PageRoot from './components/PageRoot';
-import { fieldControlList, formFieldsInfo } from './store';
+import { fieldControlList, formFieldsInfo, Licensekey, pluginId } from './store';
 import { errorPopup } from './utils';
 
 type Props = {
@@ -14,21 +13,24 @@ type Props = {
 export default (props: Props) => {
   const setFieldControlList = useSetRecoilState(fieldControlList);
   const setFormFieldsInfo = useSetRecoilState(formFieldsInfo);
+  const setLicenseKey = useSetRecoilState(Licensekey);
+  const setPluginId = useSetRecoilState(pluginId);
 
   useEffect(() => {
     (async () => {
-      const charconfig = kintone.plugin.app.getConfig(props.pluginId).config;
+      setPluginId(props.pluginId);
+
+      const pluginConfig: PluginConfig = kintone.plugin.app.getConfig(props.pluginId);
 
       let _formFieldsInfo: FormFieldsInfo[];
       try {
-        const client = new KintoneRestAPIClient();
         // アプリフォーム情報を取得
-        const resp: any = await client.app.getFormFields({ app: kintone.app.getId() as number });
+        const resp = await kintone.api(kintone.api.url('/k/v1/app/form/fields.json', true), 'GET', { app: kintone.app.getId() as number });
         _formFieldsInfo = Object.values(resp.properties) as FormFieldsInfo[];
         setFormFieldsInfo(_formFieldsInfo);
-      } catch (e) {
+      } catch (e: any) {
         console.error(e);
-        if (e instanceof KintoneRestAPIError) {
+        if (typeof e.code !== 'undefined') {
           if(e.code === 'GAIA_AP01') {
             errorPopup('アプリを公開してから設定してください', 'エラー');
           } else {
@@ -40,12 +42,16 @@ export default (props: Props) => {
         return;
       }
 
-      // charconfig が undefined の時は設定情報反映処理は実行しない
-      if(!charconfig) return;
-
-      const config: PluginSetting = JSON.parse(charconfig);
+      // ライセンスキーが保存されている時の処理
+      if (pluginConfig.licenseKey) {
+        setLicenseKey(pluginConfig.licenseKey ?? '');
+      }
+      // プラグイン設定が保存されていなかったら終了
+      if (!pluginConfig.config) return;
+      
+      const config: PluginSetting = JSON.parse(pluginConfig.config);
       // カスタマイズ設定がある時の処理
-      if(config.customizeSetting) {
+      if (config.customizeSetting) {
         // 保存済みの設定を反映[フィールド制御対象一覧]
         setFieldControlList(
           config.customizeSetting.fieldControlList.map(e => {

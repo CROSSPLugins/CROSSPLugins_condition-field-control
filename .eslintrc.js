@@ -13,7 +13,7 @@ module.exports = {
     project: './tsconfig.eslint.json',
     tsconfigRootDir: __dirname
   },
-  ignorePatterns: ['dist', 'webpack.*.js'],
+  ignorePatterns: ['dist', 'webpack.*.js', 'license'],
   rules: {
     'import/prefer-default-export': 'off'
   },

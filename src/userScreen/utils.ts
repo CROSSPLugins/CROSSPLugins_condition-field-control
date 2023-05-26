@@ -1,3 +1,5 @@
+import { Properties } from "@kintone/rest-api-client/lib/client/types";
+
 /**
  * kintoneフィールド値がブランクであるか判定する
  */
@@ -16,6 +18,11 @@ const isBlankKintoneField = (value: string | string[], fieldType: string): boole
   }
 };
 
+const getFormFields = async (): Promise<{ properties: Properties }> => {
+  return await kintone.api(kintone.api.url('/k/v1/app/form/fields.json', true), 'GET', { app: kintone.app.getId() as number });
+};
+
 export {
-  isBlankKintoneField
+  isBlankKintoneField,
+  getFormFields
 };

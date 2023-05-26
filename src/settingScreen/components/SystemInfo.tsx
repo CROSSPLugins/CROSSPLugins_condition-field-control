@@ -14,11 +14,10 @@ const style = {
 };
 
 export default (props: { show: boolean }) => {
-  const haslicensekey = true;
-
   return (
     <div css={[style.container, style.toggle(props.show)]}>
-      {haslicensekey ? <LicenseInfoForm /> : <LicenseRegisterForm />}
+      <LicenseInfoForm />
+      <LicenseRegisterForm />
       <SoftwareLicense />
     </div>
   );

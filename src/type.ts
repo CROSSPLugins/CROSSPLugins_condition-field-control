@@ -53,3 +53,9 @@ export type PluginSetting = {
   systemSetting?: SystemSetting
   customizeSetting?: CustomizeSetting
 };
+
+// プラグイン格納情報
+export type PluginConfig = {
+  licenseKey?: string // ライセンスキー
+  config?: string
+};

@@ -9,7 +9,7 @@ dayjs.extend(isSameOfAfter);
  *  lterm … フィールド値
  *  rterm … プラグイン設定値
  */
-export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, fieldType: string): boolean => {
+export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, fieldType: string, fieldDefaultValue?: string | number): boolean => {
   switch (fieldType) {
     case 'SINGLE_LINE_TEXT':
     case 'LINK':
@@ -62,19 +62,27 @@ export const executeAndCreateExpression = (lterm: any, op: string, rterm: any, f
     case 'MULTI_SELECT':
       switch (op) {
         case '次のいずれかを含む':
-          return lterm.some((e: string) => rterm.some((f: string) => e === f));
+          return (rterm as []).length ? lterm.some((e: string) => rterm.some((f: string) => e === f)) : (lterm as []).length <= 0;
         case '次のいずれかを含まない':
-          return !lterm.some((e: string) => rterm.some((f: string) => e === f));
+          return (rterm as []).length ? !lterm.some((e: string) => rterm.some((f: string) => e === f)) : (lterm as []).length > 0;
         default:
           throw new Error('想定外のエラーが発生しました');
       }
     case 'RADIO_BUTTON':
+      switch (op) {
+        case '次のいずれかを含む':
+          return (rterm as []).length ? rterm.some((e: string) => e === (lterm ? lterm : fieldDefaultValue)) : !(lterm ? lterm : fieldDefaultValue);
+        case '次のいずれかを含まない':
+          return (rterm as []).length ? !rterm.some((e: string) => e === (lterm ? lterm : fieldDefaultValue)) : lterm ? lterm : fieldDefaultValue;
+        default:
+          throw new Error('想定外のエラーが発生しました');
+      }
     case 'DROP_DOWN':
       switch (op) {
         case '次のいずれかを含む':
-          return rterm.some((e: string) => e === lterm);
+          return (rterm as []).length ? rterm.some((e: string) => e === lterm) : !lterm;
         case '次のいずれかを含まない':
-          return !rterm.some((e: string) => e === lterm);
+          return (rterm as []).length ? !rterm.some((e: string) => e === lterm) : lterm;
         default:
           throw new Error('想定外のエラーが発生しました');
       }
