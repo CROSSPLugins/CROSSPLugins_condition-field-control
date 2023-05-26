@@ -40,7 +40,7 @@ export type FormFieldsInfo = {
 
 // システム設定
 export type SystemSetting = {
-  licenseKey: string
+  _: any
 };
 
 // カスタマイズ設定
@@ -52,4 +52,10 @@ export type CustomizeSetting = {
 export type PluginSetting = {
   systemSetting?: SystemSetting
   customizeSetting?: CustomizeSetting
+};
+
+// プラグイン格納情報
+export type PluginConfig = {
+  licenseKey?: string // ライセンスキー
+  config?: string
 };

@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import FieldControlList from './FieldControlList';
 import { fieldControlList, formFieldsInfo as _formFieldsInfo, Licensekey } from '../store';
-import { PluginSetting } from '../../type';
+import { PluginConfig, PluginSetting } from '../../type';
 import { deepcp, errorPopup } from '../utils';
 
 const style = {
@@ -141,7 +141,6 @@ export default (props: { show: boolean }) => {
     if(!checkSetting()) return;
 
     const pluginSetting: PluginSetting = {
-      systemSetting: { licenseKey },
       customizeSetting: {
         fieldControlList: list.map(e => ({
           targetField: e.targetField.value as string,
@@ -154,11 +153,13 @@ export default (props: { show: boolean }) => {
         }))
       }
     };
-    kintone.plugin.app.setConfig(
-      {
-        config: JSON.stringify(pluginSetting)
-      }
-    );
+
+    const pluginConfig: PluginConfig = {
+      licenseKey,
+      config: JSON.stringify(pluginSetting)
+    };
+
+    kintone.plugin.app.setConfig(pluginConfig);
   };
 
   return (

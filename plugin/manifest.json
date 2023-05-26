@@ -11,7 +11,7 @@
     "html": "html/settingScreen.html",
     "js": ["js/settingScreen.js"],
     "css": ["css/51-modern-default.css"],
-    "required_params": []
+    "required_params": ["licenseKey"]
   },
   "name": {
     "ja": "CROSSPLugins 条件フィールド制御",

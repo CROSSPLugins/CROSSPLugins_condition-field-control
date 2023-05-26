@@ -1,6 +1,6 @@
 import { Properties } from "@kintone/rest-api-client/lib/client/types";
 import { RadioButton } from "@kintone/rest-api-client/lib/KintoneFields/types/property";
-import { PluginSetting } from "../type";
+import { PluginConfig, PluginSetting } from "../type";
 import { executeAndCreateExpression } from "./executeAndCreateExpression";
 import { isBlankKintoneField, getFormFields } from "./utils";
 import decryptLicenseInfo from "../common/modules/decryptLicensekey";
@@ -8,24 +8,23 @@ import isWithinExpirationDate from "../common/modules/isWithinExpirationDate";
 
 (($PLUGIN_ID) => {
   // プラグイン設定情報取得
-  const charconfig = kintone.plugin.app.getConfig($PLUGIN_ID).config;
+  const pluginConfig: PluginConfig = kintone.plugin.app.getConfig($PLUGIN_ID);
 
-  if(!charconfig) return;
-
-  // 設定情報パース
-  const config: PluginSetting = JSON.parse(charconfig);
-  
   // ライセンス判定
-  if (config.systemSetting) {
-    // falsyな値の場合は処理しない
-    if (!config.systemSetting.licenseKey) return;
-    const licenseInfo = decryptLicenseInfo(config.systemSetting.licenseKey);
+  if (pluginConfig.licenseKey) {
+    const licenseInfo = decryptLicenseInfo(pluginConfig.licenseKey);
     // 有効期限判定
     if (!isWithinExpirationDate(licenseInfo.expirationDateUnixTime)) return;
   } else {
     return;
   }
   console.log('[DEBUG] ライセンス有効');
+
+  // プラグイン設定なしの場合終了
+  if (!pluginConfig.config) return;
+
+  // 設定情報パース
+  const config: PluginSetting = JSON.parse(pluginConfig.config);
 
   if(config.customizeSetting) {
     const customizeSetting = config.customizeSetting;

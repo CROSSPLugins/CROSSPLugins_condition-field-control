@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { Licensekey, pluginId } from '../store';
 import decryptLicensekey from '../../common/modules/decryptLicensekey';
-import { PluginSetting } from '../../type';
+import { PluginConfig } from '../../type';
 import { successPopup } from '../utils';
 
 const style = {
@@ -95,28 +95,26 @@ export default () => {
     setRecoilLicensekey(licensekeyValue);
     // システム設定情報: ライセンスキーを保存
     // プラグイン設定情報: 保存済み情報を取得しそのまま保存
-    const charconfig = kintone.plugin.app.getConfig(_pluginId).config;
-    let customizeSetting;
-    if (!charconfig) {
-      customizeSetting = undefined;
-    } else {
-      const config: PluginSetting = JSON.parse(charconfig);
-      if (!config.customizeSetting) {
-        customizeSetting = undefined;
+    const pluginConfig: PluginConfig = kintone.plugin.app.getConfig(_pluginId);
+    let pluginSetting;
+    if (pluginConfig.config) {
+      const config = pluginConfig.config;
+      if (config) {
+        pluginSetting = config;
       } else {
-        customizeSetting = config.customizeSetting;
+        pluginSetting = undefined;
       }
+    } else {
+      pluginSetting = undefined;
     }
 
-    const pluginSetting: PluginSetting = {
-      systemSetting: { licenseKey: licensekeyValue },
-      customizeSetting
+    const _config: PluginConfig = {
+      licenseKey: licensekeyValue,
+      config: pluginSetting
     };
 
     kintone.plugin.app.setConfig(
-      {
-        config: JSON.stringify(pluginSetting)
-      },
+      _config,
       () => {
         successPopup('ライセンスキーが正常に保存されました。');
         setLicensekey('');

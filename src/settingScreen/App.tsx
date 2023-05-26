@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
-import { FormFieldsInfo, PluginSetting } from '../type';
+import { FormFieldsInfo, PluginConfig, PluginSetting } from '../type';
 import PageRoot from './components/PageRoot';
 import { fieldControlList, formFieldsInfo, Licensekey, pluginId } from './store';
 import { errorPopup } from './utils';
@@ -20,7 +20,7 @@ export default (props: Props) => {
     (async () => {
       setPluginId(props.pluginId);
 
-      const charconfig = kintone.plugin.app.getConfig(props.pluginId).config;
+      const pluginConfig: PluginConfig = kintone.plugin.app.getConfig(props.pluginId);
 
       let _formFieldsInfo: FormFieldsInfo[];
       try {
@@ -42,16 +42,16 @@ export default (props: Props) => {
         return;
       }
 
-      // charconfig が undefined の時は設定情報反映処理は実行しない
-      if(!charconfig) return;
-
-      const config: PluginSetting = JSON.parse(charconfig);
-      // システム設定がある時の処理
-      if (config.systemSetting) {
-        setLicenseKey(config.systemSetting.licenseKey ?? '');
+      // ライセンスキーが保存されている時の処理
+      if (pluginConfig.licenseKey) {
+        setLicenseKey(pluginConfig.licenseKey ?? '');
       }
+      // プラグイン設定が保存されていなかったら終了
+      if (!pluginConfig.config) return;
+      
+      const config: PluginSetting = JSON.parse(pluginConfig.config);
       // カスタマイズ設定がある時の処理
-      if(config.customizeSetting) {
+      if (config.customizeSetting) {
         // 保存済みの設定を反映[フィールド制御対象一覧]
         setFieldControlList(
           config.customizeSetting.fieldControlList.map(e => {
