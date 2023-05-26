@@ -1,6 +1,6 @@
 {
   "name": "crossplugins_condition-field-control",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "config": {
     "plugin": {
       "name": "CROSSPLugins_条件フィールド制御"
