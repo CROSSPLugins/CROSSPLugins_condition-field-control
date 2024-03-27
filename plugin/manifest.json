@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "APP",
   "desktop": {
     "js": ["js/userScreen.js"],
@@ -16,16 +16,19 @@
   "name": {
     "ja": "CROSSPLugins 条件フィールド制御",
     "en": "CROSSPLugins Field controller.",
-    "zh": "CROSSPLugins Field controller."
+    "zh": "CROSSPLugins Field controller.",
+    "es": "CROSSPLugins Field controller."
   },
   "description": {
-    "ja": "CROSSPLuginsは株式会社クロス・ヘッドが提供するプラグインです。フィールドを条件に応じて入力必須・編集不可に制御できるプラグインです。",
+    "ja": "CROSSPLuginsはクロス・ヘッド株式会社が提供するプラグインです。フィールドを条件に応じて入力必須・編集不可に制御できるプラグインです。",
     "en": "CROSSPLugins is a plugin provided by CROSS HEAD. This plugin allows you  whether fields are required field or prohibited to edit by conditions.",
-    "zh": "CROSSPLugins is a plugin provided by CROSS HEAD. This plugin allows you  whether fields are required field or prohibited to edit by conditions."
+    "zh": "CROSSPLugins is a plugin provided by CROSS HEAD. This plugin allows you  whether fields are required field or prohibited to edit by conditions.",
+    "es": "CROSSPLugins is a plugin provided by CROSS HEAD. This plugin allows you  whether fields are required field or prohibited to edit by conditions."
   },
   "homepage_url": {
     "ja": "https://www.crosshead.co.jp/solution/crossplugins/",
     "en": "https://www.crosshead.co.jp/solution/crossplugins/",
-    "zh": "https://www.crosshead.co.jp/solution/crossplugins/"
+    "zh": "https://www.crosshead.co.jp/solution/crossplugins/",
+    "es": "https://www.crosshead.co.jp/solution/crossplugins/"
   }
 }

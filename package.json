@@ -1,6 +1,6 @@
 {
   "name": "crossplugins_condition-field-control",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "config": {
     "plugin": {
       "name": "CROSSPLugins_条件フィールド制御"
@@ -28,7 +28,7 @@
     "@kintone/dts-gen": "^6.1.20",
     "@kintone/plugin-packer": "^6.0.22",
     "@kintone/plugin-uploader": "^7.1.8",
-    "@kintone/webpack-plugin-kintone-plugin": "^6.0.23",
+    "@kintone/webpack-plugin-kintone-plugin": "^8.0.6",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@types/toastr": "^2.1.40",
