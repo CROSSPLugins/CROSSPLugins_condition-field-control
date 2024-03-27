@@ -102,10 +102,10 @@ export default () => {
       if (config) {
         pluginSetting = config;
       } else {
-        pluginSetting = undefined;
+        pluginSetting = '';
       }
     } else {
-      pluginSetting = undefined;
+      pluginSetting = '';
     }
 
     const _config: PluginConfig = {
